@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ page import="com.chainsys.trainingproject.dao.impl.UserCourseDAOImpl" %>
-        <%@ page import="com.chainsys.trainingproject.model.UserCourse" %>
+    <%@ page import="com.chainsys.trainingplacementapp.dao.impl.UserCourseDAOImpl" %>
+        <%@ page import="com.chainsys.trainingplacementapp.domain.UserCourse" %>
             <%@ page import="java.util.List" %>
         
     

@@ -8,16 +8,13 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(exclude=DataSourceAutoConfiguration.class)
-@ServletComponentScan("com.chainsys.training")
+@ServletComponentScan("com.chainsys.trainingplacementapp")
 public class Application extends SpringBootServletInitializer {
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
 	} 
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
 }

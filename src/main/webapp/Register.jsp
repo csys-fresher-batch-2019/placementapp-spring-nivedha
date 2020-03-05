@@ -17,8 +17,13 @@ body {
 }
 </style>
 <body>
+<%String errorMessage = (String)request.getAttribute("errorMessage");
+if(errorMessage !=null)
+{%>
+<font color="red"style="font: bold"><%=errorMessage%>
+<%}%>
 
-<form action="RegistrationServ">
+<form action="RegistrationServ" autocomplete="off">
 <div style="text-align:centre">
 <pre>
 <br></br>
@@ -29,7 +34,7 @@ body {
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">City           <input type="text" name="city"  required/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Mobile Number  <input type="text" name="mobileno"  required/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Email Id       <input type="email" name="email"  required/>
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Qualification          <select name="qualification">
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Qualification          <select name="qualification" required>
                      <option value="BE-CS" > BE-CS </option>
                      <option value="BE-EEE" >BE-EEE </option>
                      <option value="BE-ECE" >BE-ECE </option>
@@ -37,15 +42,12 @@ body {
                      <option value="BE-IT" >MCA </option>
                      <option value="BE-IT" >BCA </option>
                      </select>
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Gender              <input type="radio" name="gender" value="male" > Male  
-                    <input type="radio" name="gender" value="female" >Female 
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Gender              <input type="radio" name="gender" value="male" required> Male  
+                    <input type="radio" name="gender" value="female" required>Female 
 </pre>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">                     <button type="submit" >SIGN UP</button><br></br>
-
-
 </div>
 <br/><br/>
-
 </form>
 </body>
 </html>

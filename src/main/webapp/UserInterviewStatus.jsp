@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ page import="com.chainsys.trainingproject.dao.impl.InterviewPerformanceDAOImpl" %>
-        <%@ page import="com.chainsys.trainingproject.model.InterviewPerformance" %>
+    <%@ page import="com.chainsys.trainingplacementapp.dao.impl.InterviewPerformanceDAOImpl" %>
+        <%@ page import="com.chainsys.trainingplacementapp.domain.InterviewPerformance" %>
             <%@ page import="java.util.List" %>
         
     
@@ -21,7 +21,7 @@ body {
 </style>
 <body>
 
-<form action="SearchByStatusServ">
+<form action="SearchByStatusServ" autocomplete="off">
 <div style="text-align:center">
 <h1 style="color:white; font-size:25px; font-family:courier; text-align:centre;">SEARCH BY STATUS</h1>
 <p style="color:white; font-size:20px; font-family:courier;text-align:centre;"><input type="text" name="status"><button type="submit">SEARCH</button>

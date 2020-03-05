@@ -1,5 +1,5 @@
-<%@page import="com.chainsys.trainingproject.dao.impl.JoinDAOImpl"%>
-<%@page import="com.chainsys.trainingproject.model.JoinUserCompany"%>
+<%@page import="com.chainsys.trainingplacementapp.dao.impl.JoinDAOImpl"%>
+<%@page import="com.chainsys.trainingplacementapp.domain.JoinUserCompany"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
