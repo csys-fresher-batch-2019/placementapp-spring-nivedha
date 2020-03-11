@@ -6,19 +6,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
 import com.chainsys.trainingplacementapp.dao.RegistrationDAO;
 import com.chainsys.trainingplacementapp.domain.Registration;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
-
+@Repository
 public class RegistrationDAOImpl implements RegistrationDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(RegistrationDAOImpl.class);
 
-	public int addUserDetails(Registration reg) throws DbException {
+	public int save(Registration reg) throws DbException {
        int row = 0;
 		String sql = "insert into registration(user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender) values(user_id_seq.nextval,?,?,?,?,?,?,?)";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setString(1, reg.getUserName());
 			stmt.setString(2, reg.getUserPassword());
@@ -28,33 +32,35 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			stmt.setString(6, reg.getQualification());
 			stmt.setString(7, reg.getGender());
 			 row = stmt.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
 		}
 		return row;
 	}
 
-	public void updateUserDetails(int userId, long mobileNo) throws DbException {
+	public void update(int userId, long mobileNo) throws DbException {
 
 		String sql = "update registration set mobile_no=? where user_id=?";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setLong(1, mobileNo);
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_UPDATE);
 		}
 	}
 
-	public List<Registration> allUserDetails() throws DbException {
+	public List<Registration> findAll() throws DbException {
 
 		List<Registration> list1 = new ArrayList<Registration>();
 		String sql = "select * from registration";
-		log.getInput("***Display User Details***");
-		log.getInput(sql);
+		logger.info("***Display User Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -71,29 +77,33 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return list1;
 	}
 
-	public void deleteUserDetails(int userId) throws DbException {
+	public void delete(int userId) throws DbException {
 
 		String sql = "delete from registration where user_id=?";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_DELETE);
+
 		}
 	}
 
-	public int getNoOfUsers() throws DbException {
+	public int count() throws DbException {
 
 		String sql = "select count(user_id) from registration";
-		log.getInput("***Display the No of Users***");
-		log.getInput(sql);
+		logger.info("***Display the No of Users***");
+		logger.info(sql);
 		int a = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -102,17 +112,18 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return a;
 	}
 
-	public List<Registration> getDegreeWiseNoOfUsers() throws DbException {
+	public List<Registration> findQualificationAndCount() throws DbException {
 
 		List<Registration> list1 = new ArrayList<Registration>();
 		String sql = "select qualification as qualification,count(user_id) from registration group by qualification";
-		log.getInput("***Display No Of Users Based on Qualification***");
-		log.getInput(sql);
+		logger.info("***Display No Of Users Based on Qualification***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -123,7 +134,8 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list1;
 	}

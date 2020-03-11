@@ -6,21 +6,24 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.ClientCompanyDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class ClientCompanyDAOImpl implements ClientCompanyDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(ClientCompanyDAOImpl.class);
 
-	public void addCompanyDetails(ClientCompany client) throws DbException {
+	public void save(ClientCompany client) throws DbException {
 
 		String sql = "insert into clientcmpy(client_id,company_name,company_type,company_address,ph_no,contact_person,email_id)values"
 				+ "(client_id_seq.nextval,?,?,?,?,?,?)";
-		log.getInput("***Add Company Details***");
-		log.getInput(sql);
+		logger.info("***Add Company Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, client.getCompanyName());
 			pst.setString(2, client.getCompanyType());
@@ -29,18 +32,20 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setString(5, client.getContactPerson());
 			pst.setString(6, client.getEmailId());
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
+
 		}
 	}
 
-	public List<ClientCompany> listCompanyDetails() throws DbException {
+	public List<ClientCompany> findAll() throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		String sql = "select * from clientcmpy";
-		log.getInput("***Display All Company Details***");
-		log.getInput(sql);
+		logger.info("***Display All Company Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -56,17 +61,19 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return list1;
 	}
 
-	public List<ClientCompany> searchByCompany(String companyName) throws DbException {
+	public List<ClientCompany> findByCompanyName(String companyName) throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		String sql = "select client_id,company_name,company_type,company_address,ph_no,contact_person,email_id from clientcmpy where company_name like ?";
-		log.getInput("***Display " + companyName + " Company Details***");
-		log.getInput(sql);
+		logger.info("***Display " + companyName + " Company Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, "%" + companyName + "%");
 			try (ResultSet rs = pst.executeQuery();) {
@@ -83,31 +90,35 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return list1;
 	}
 
-	public void deleteCompanyDetails(int clientId) throws DbException {
+	public void delete(int clientId) throws DbException {
 
 		String sql = "delete from clientcmpy where client_id=?";
-		log.getInput("***Delete Company Details***");
-		log.getInput(sql);
+		logger.info("***Delete Company Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, clientId);
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_DELETE);
+
 		}
 	}
 
-	public List<ClientCompany> getCompanyNames() throws DbException {
+	public List<ClientCompany> findCompanyNames() throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		String sql = "select company_name from clientcmpy";
-		log.getInput("***Display Company Names***");
-		log.getInput(sql);
+		logger.info("***Display Company Names***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -117,15 +128,17 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return list1;
 	}
 
-	public int getNoOfCompanies() throws DbException {
+	public int count() throws DbException {
 
 		String sql = "select count(company_name) from clientcmpy";
-		log.getInput(sql);
+		logger.info(sql);
 		int a = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -134,21 +147,25 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return a;
 	}
 
-	public void updateCompanyDetails(String companyName, String contactPerson) throws DbException {
+	public void update(String companyName, String contactPerson) throws DbException {
 
 		String sql = "update clientcmpy set contact_person=? where company_name=?";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, contactPerson);
 			pst.setString(2, companyName);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_UPDATE);
+
 		}
 	}
 }

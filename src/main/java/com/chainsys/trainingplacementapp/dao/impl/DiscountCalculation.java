@@ -4,20 +4,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class DiscountCalculation {
 
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(DiscountCalculation.class);
 
-	public int getNoOfUser(int userId) throws DbException {
+	public int count(int userId) throws DbException {
 
 		String sql = "select count(user_id) from usercourse where user_id=?";
-		log.getInput("");
-		log.getInput("***Display " + userId + " count***");
-		log.getInput(sql);
+		logger.info("***Display " + userId + " count***");
+		logger.info(sql);
 		int a = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
@@ -27,17 +29,18 @@ public class DiscountCalculation {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return a;
 	}
 
-	public int getCourseFees(int courseId) throws DbException {
+	public int findFeesByCourseId(int courseId) throws DbException {
 
 		String sql = "select course_fees from course where course_id=?";
-		log.getInput("");
-		log.getInput("***Display " + courseId + " Fees Details***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Display " + courseId + " Fees Details***");
+		logger.info(sql);
 		int a = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, courseId);
@@ -47,7 +50,8 @@ public class DiscountCalculation {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return a;
 	}

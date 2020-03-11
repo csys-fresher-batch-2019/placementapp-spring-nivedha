@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.TrainerDAOImpl;
+import com.chainsys.trainingplacementapp.dao.TrainerDAO;
 import com.chainsys.trainingplacementapp.domain.Trainer;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/TrainerDetailsServ")
 
@@ -22,12 +23,11 @@ public class TrainerDetailsServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		TrainerDAOImpl impl = new TrainerDAOImpl();
-		Trainer t = new Trainer();
+		
 		List<Trainer> list = new ArrayList<Trainer>();
-		TrainerDAOImpl impl1 = new TrainerDAOImpl();
+		TrainerDAO impl1 = DAOFactory.getTrainerDAO();
 		try {
-			list = impl1.listTrainerDetails();
+			list = impl1.findAll();
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

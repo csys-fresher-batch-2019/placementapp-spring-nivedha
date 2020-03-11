@@ -7,10 +7,10 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface InterviewPerformanceDAO {
 
-	void addPerformanceDetails(int clientId, int userId) throws  DbException;
+	void save(int clientId, int userId) throws  DbException;
 
-	void updateInterviewMarks(int marks, int performId) throws DbException;
+	void updateInterviewMarksById(int marks, int performId) throws DbException;
 
-	List<InterviewPerformance> viewPerformanceStatus() throws DbException;
+	List<InterviewPerformance> findAll() throws DbException;
 
 }

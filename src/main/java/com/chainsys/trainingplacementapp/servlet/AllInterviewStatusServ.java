@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.InterviewPerformanceDAOImpl;
+import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/AllInterviewStatusServ")
 public class AllInterviewStatusServ extends HttpServlet {
@@ -21,11 +22,10 @@ public class AllInterviewStatusServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		InterviewPerformanceDAOImpl impl = new InterviewPerformanceDAOImpl();
+        InterviewPerformanceDAO impl=DAOFactory.getInterviewPerformanceDAO();
 		List<InterviewPerformance> list = new ArrayList<InterviewPerformance>();
 		try {
-			list = impl.viewPerformanceStatus();
+			list = impl.findAll();
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

@@ -8,23 +8,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class UserCourseDAOImpl implements UserCourseDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(UserCourseDAOImpl.class);
 
-	public void addCourseDurationDate(UserCourse uc) throws DbException {
+	public void save(UserCourse uc) throws DbException {
 
 		String sql = "insert into usercourse"
 				+ "(user_course_id,user_id,course_id,start_date,completion_date,total_amount)"
 				+ "values (user_course_id_seq.nextval,?,?,?,?,?)";
-		log.getInput("");
-		log.getInput("***Add Course Duration Details***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Add Course Duration Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, uc.getUserId());
 			pst.setInt(2, uc.getCourseId());
@@ -32,16 +35,17 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 			pst.setDate(4, Date.valueOf(uc.getCompletionDate()));
 			pst.setDouble(5, uc.getTotalAmount());
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
 		}
 	}
 
-	public int getDuration(int courseId) throws DbException {
+	public int findCourseDurationByCourseId(int courseId) throws DbException {
 		String sql = "select course_duration from course where course_id =?";
-		log.getInput(courseId);
-		log.getInput("***Display Course Duration Details***");
+		logger.info(""+courseId);
+		logger.info("***Display Course Duration Details***");
 		int a = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, courseId);
@@ -51,17 +55,17 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return a;
 	}
 
-	public List<UserCourse> getUserCourseDetails(int userId) throws DbException {
+	public List<UserCourse> findAllByUserId(int userId) throws DbException {
 
 		List<UserCourse> list1 = new ArrayList<UserCourse>();
 		String sql = "select * from usercourse where user_id=?";
-		log.getInput("***Display UserCourse Details***");
+		logger.info("***Display UserCourse Details***");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
 			try (ResultSet rs = pst.executeQuery();) {
@@ -85,8 +89,9 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
 		return list1;
 	}

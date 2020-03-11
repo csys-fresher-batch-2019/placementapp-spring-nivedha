@@ -17,6 +17,12 @@ body {
 }
 </style>
 <body>
+<%
+String errorMessage = request.getParameter("errorMessage");
+if (errorMessage != null) {
+out.println("<middle><font color='white' size='5'>" + errorMessage + "</font></middle>");
+}
+%>
 <pre>
 <br></br>
 <h1 style="color:white; font-size:30px; font-family:courier; text-align:centre;">                                   LOGIN</h1>

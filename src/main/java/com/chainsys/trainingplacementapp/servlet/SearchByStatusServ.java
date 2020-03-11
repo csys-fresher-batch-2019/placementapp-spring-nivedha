@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.JoinDAOImpl;
+import com.chainsys.trainingplacementapp.dao.JoinDAO;
 import com.chainsys.trainingplacementapp.domain.JoinUserCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/SearchByStatusServ")
 
@@ -23,13 +24,13 @@ public class SearchByStatusServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		JoinDAOImpl impl = new JoinDAOImpl();
+		JoinDAO impl = DAOFactory.getJoinDAO();
 		List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
 		JoinUserCompany c = new JoinUserCompany();
 		c.setInterStatus(request.getParameter("status"));
 		list.add(c);
 		try {
-			list = impl.getUserCompanyDetails(c);
+			list = impl.findUsersByInterviewStatus(c);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

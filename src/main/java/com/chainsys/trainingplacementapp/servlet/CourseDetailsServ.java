@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.CourseDAOImpl;
+import com.chainsys.trainingplacementapp.dao.CourseDAO;
 import com.chainsys.trainingplacementapp.domain.Course;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 import com.chainsys.trainingplacementapp.util.Logger;
 
 @WebServlet("/CourseDetailsServ")
@@ -29,14 +30,13 @@ public class CourseDetailsServ extends HttpServlet {
 		List<Course> list = new ArrayList<Course>();
 		PrintWriter out = response.getWriter();
 		String courseName = request.getParameter("courseName");
-		CourseDAOImpl obj = new CourseDAOImpl();
+		CourseDAO obj = DAOFactory.getCourseDAO();
 		try {
-			list = obj.allCourseDetails(courseName);
-			log.getInput(list);
-			out.println(list);
+			list = obj.findByCourseName(courseName);
+			log.info(list);
 			request.setAttribute("COURSE_LIST", list);
 		} catch (Exception e) {
-			log.error(e);
+			log.debug(e.getMessage());
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("CourseDetails.jsp");
 		dispatcher.forward(request, response);

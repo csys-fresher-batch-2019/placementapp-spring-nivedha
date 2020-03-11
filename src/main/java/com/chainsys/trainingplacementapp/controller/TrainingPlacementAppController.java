@@ -11,7 +11,7 @@ import com.chainsys.trainingplacementapp.dao.CourseDAO;
 import com.chainsys.trainingplacementapp.dao.RegistrationDAO;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.domain.Registration;
-import com.chainsys.trainingplacementapp.dto.Messagedto;
+import com.chainsys.trainingplacementapp.dto.MessageDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
@@ -24,13 +24,13 @@ public class TrainingPlacementAppController {
 	
 	@GetMapping("/allCourseDetails")
 	public List<Course> allCourseDetails(@RequestParam("courseName") String courseName) throws DbException{
-		List<Course> c = cdao.allCourseDetails(courseName);
+		List<Course> c = cdao.findByCourseName(courseName);
 		return c;
 	}
 	
 	@GetMapping("/Register")
-	public Messagedto Register(@RequestParam("userName")String userName,@RequestParam("password")String password,@RequestParam("city")String city,@RequestParam("mobileNo")long mobileNo,@RequestParam("email")String email,@RequestParam("qualification")String qualification,@RequestParam("gender")String gender) throws DbException {
-		Messagedto msg = new Messagedto();
+	public MessageDTO Register(@RequestParam("userName")String userName,@RequestParam("password")String password,@RequestParam("city")String city,@RequestParam("mobileNo")long mobileNo,@RequestParam("email")String email,@RequestParam("qualification")String qualification,@RequestParam("gender")String gender) throws DbException {
+		MessageDTO msg = new MessageDTO();
 		Registration reg1 = new Registration();
 		reg1.setUserName(userName);
 		reg1.setUserPassword(password);
@@ -39,7 +39,7 @@ public class TrainingPlacementAppController {
 		reg1.setMailId(email);
 		reg1.setQualification(qualification);
 		reg1.setGender(gender);
-		int v = rdao.addUserDetails(reg1);
+		int v = rdao.save(reg1);
 		 if(v == 1) {
 			 msg.setInfoMessage("Registered Successfully!!");
 		 }

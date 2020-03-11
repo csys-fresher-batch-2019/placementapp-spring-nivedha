@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.chainsys.trainingplacementapp.dao.impl.UserCourseDAOImpl;
+import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/CourseEnrollmentServ")
 
@@ -22,10 +23,10 @@ public class CourseEnrollmentServ extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession ses = request.getSession(false);
-		UserCourseDAOImpl impl1 = new UserCourseDAOImpl();
+		UserCourseDAO impl = DAOFactory.getUserCourseDAO();
 		UserCourse course = (UserCourse) ses.getAttribute("userCourse");
 		try {
-			impl1.addCourseDurationDate(course);
+			impl.save(course);
 			response.sendRedirect("UserCourseServ");
 		} catch (DbException e) {
 			e.printStackTrace();

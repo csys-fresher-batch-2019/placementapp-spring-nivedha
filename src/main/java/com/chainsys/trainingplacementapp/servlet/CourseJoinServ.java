@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.dao.impl.DiscountCalculation;
-import com.chainsys.trainingplacementapp.dao.impl.UserCourseDAOImpl;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/CourseJoinServ")
 
@@ -42,11 +43,11 @@ public class CourseJoinServ extends HttpServlet {
 			uc1.setCourseId(courseId);
 			uc1.setStartDate(currentDate);
 			list2.add(uc1);
-			UserCourseDAOImpl impl1 = new UserCourseDAOImpl();
+			UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
 			for (UserCourse userCourse : list2) {
 				int duration = 0;
 				try {
-					duration = impl1.getDuration(courseId);
+					duration = impl1.findCourseDurationByCourseId(courseId);
 				} catch (DbException e) {
 					e.printStackTrace();
 				}
@@ -70,8 +71,8 @@ public class CourseJoinServ extends HttpServlet {
 		Course c = new Course();
 		uc.setUserId(userId);
 		c.setCourseId(courseId);
-		int courseCount = dis.getNoOfUser(userId);
-		int courseFees = dis.getCourseFees(courseId);
+		int courseCount = dis.count(userId);
+		int courseFees = dis.findFeesByCourseId(courseId);
 		double discountAmount;
 		switch (courseCount) {
 		case 2:

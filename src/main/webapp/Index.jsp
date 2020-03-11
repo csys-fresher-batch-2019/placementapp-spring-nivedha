@@ -15,30 +15,9 @@
 </head>
 
 <body id="wrapper">
-    <section id="top-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7 col-sm-7 col-xs-7 top-header-links">
-                    <ul class="contact_links">
-                        <li><i class="fa fa-phone"></i><a href="#">+91 847 594 5080</a></li>
-                        <li><i class="fa fa-envelope"></i><a href="#">passionsoftware.in</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-5 col-sm-5 col-xs-5 social">
-                    <ul class="social_links">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        </div>
-
-    </section>
-
+<% HttpSession sess = request.getSession();
+String userId = (String) sess.getAttribute("userid");
+ %>
     <header>
         <nav class="navbar navbar-inverse">
             <div class="container">
@@ -65,10 +44,15 @@
         </ul>
       </li>
                             <li><a href="TrainerDetailsServ">TRAINER</a></li>
+                            <% if (userId==null){ %>
                             <li><a href="Login.jsp">SIGN IN</a></li>
                             <li><a href="Register.jsp">SIGN UP</a></li>
+                            <%}else { %>
+                            <li><a href=#>WELCOME <%=userId %> !!!</a></li>
                             <li><a href="Logout.jsp">SIGN OUT</a></li>
+                            <%} %>
                             <li><a href="AdminLogin.html">ADMIN</a></li>
+                            
                             
                         </ul>
                     </div>
@@ -183,12 +167,7 @@
                         <p class="subheading">Real Life Examples and Live Project Along with Practical Session</p>
 
                     </div>
-
-                   
-
                     <button type="button" class="btn btn-primary slide">Learn More  <i class="fa fa-caret-right"></i> </button>
-
-
                 </div>
             </div>
         </div>
@@ -317,12 +296,7 @@
         </div>
 
     </section>
-
-
-
-
-
-    <section id="footer">
+  <section id="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-12 block">

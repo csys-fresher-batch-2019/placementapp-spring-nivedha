@@ -4,32 +4,37 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.AdminLoginDAO;
+import com.chainsys.trainingplacementapp.domain.AdminLogin;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class AdminLoginDAOImpl implements AdminLoginDAO {
 
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(AdminLoginDAOImpl.class);
 
-	public String adminLogin(String email, String password) throws DbException {
+	public String findByAdminEmailAndPassword(AdminLogin a) throws DbException {
 		String msg = "";
 		String sql = "select * from admin where admin_email=? and admin_password=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setString(1, email);
-			stmt.setString(2, password);
+			stmt.setString(1, a.getMailId());
+			stmt.setString(2, a.getPassword());
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
 					msg = "success";
-					log.getInput("LOGGED IN");
+					logger.info(msg);
 				} else {
 					msg = "failure";
-					log.getInput("INVALID USERNAME OR PASSWORD");
+					logger.info(msg);
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return msg;
 	}

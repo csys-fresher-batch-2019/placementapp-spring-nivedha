@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @JsonInclude(Include.NON_NULL)
 
-public class Messagedto {
+public class MessageDTO {
 	
 		private String infoMessage;
 		private String errorMessage;

@@ -9,16 +9,16 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface JoinDAO {
 
-	public List<JoinUserCourse> getUserCourseDetails(JoinUserCourse j) throws DbException;
+	public List<JoinUserCourse> findAllByCourseIdAndUserId(JoinUserCourse j) throws DbException;
 	
-	public List<JoinUserCompany> getUserCompanyDetails(JoinUserCompany j) throws DbException;
+	public List<JoinUserCompany> findUsersByInterviewStatus(JoinUserCompany j) throws DbException;
 	
-	public List<JoinUserCompany> getUserCompanyDetailsByMarks(JoinUserCompany j) throws DbException;
+	public List<JoinUserCompany> findUsersByInterviewMarks(JoinUserCompany j) throws DbException;
 	
-	public List<JoinCompanySchedule> getCompanySchedule(String interviewDate) throws DbException;
+	public List<JoinCompanySchedule> findInterviewScheduleByInterviewDate(String interviewDate) throws DbException;
 	
-	public List<JoinCompanySchedule> searchByJob(JoinCompanySchedule in) throws DbException;
+	public List<JoinCompanySchedule> findCompaniesByJobRequirementAndTitle(JoinCompanySchedule in) throws DbException;
 	
-	public List<JoinUserCompany> getStatusByUserId(JoinUserCompany j) throws DbException;
+	public List<JoinUserCompany> findUserStatusByUserId(JoinUserCompany j) throws DbException;
 	
 }

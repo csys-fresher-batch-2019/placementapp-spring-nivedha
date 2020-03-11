@@ -4,46 +4,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
 import com.chainsys.trainingplacementapp.dao.LoginDAO;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
-
+@Repository
 public class LoginDAOImpl implements LoginDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(LoginDAOImpl.class);
 
-	public String[] login(String email, String userPassword) throws DbException {
-		int userId = 0;
-		String msg = "";
-		String s[] = new String[2];
-		String sql = "select mail_id,user_password from registration where mail_id= ? and user_password = ?";
-		String sql1 = "select user_id from registration where mail_id=?";
+	public String findByEmailAndPassword(String emailId, String userPassword) throws DbException {
+		String sql = "select user_id from registration where mail_id=? and user_password = ?";
+		logger.info("Users : " + sql);
+		String msg = null;
 		try (Connection con = DbConnection.getConnection();
-				PreparedStatement stmt = con.prepareStatement(sql);
-				PreparedStatement stmt1 = con.prepareStatement(sql1);) {
-			stmt.setString(1, email);
+				PreparedStatement stmt = con.prepareStatement(sql);) {
+			stmt.setString(1, emailId);
 			stmt.setString(2, userPassword);
 			try (ResultSet rs = stmt.executeQuery()) {
+				
 				if (rs.next()) {
-					msg = email + "" + userPassword;
-				} else
-					msg = "Login Failed";
+					msg = rs.getString("user_id");
+				} 
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
+
 		}
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt1 = con.prepareStatement(sql1);) {
-			stmt1.setString(1, email);
-			try (ResultSet rs1 = stmt1.executeQuery()) {
-				if (rs1.next()) {
-					userId = rs1.getInt("user_id");
-				}
-			}
-		} catch (Exception e) {
-			log.error(e);
-		}
-		s[0] = msg;
-		s[1] = userId + "";
-		return s;
+		
+		return msg;
 	}
+	
 }

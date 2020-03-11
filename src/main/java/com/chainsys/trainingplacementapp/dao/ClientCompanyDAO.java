@@ -7,18 +7,18 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface ClientCompanyDAO {
 
-	void addCompanyDetails(ClientCompany client) throws DbException;
+	void save(ClientCompany client) throws DbException;
 
-	List<ClientCompany> listCompanyDetails() throws DbException;
+	List<ClientCompany> findAll() throws DbException;
 
-	List<ClientCompany> searchByCompany(String companyName) throws DbException;
+	List<ClientCompany> findByCompanyName(String companyName) throws DbException;
 
-	void deleteCompanyDetails(int clientId) throws DbException;
+	void delete(int clientId) throws DbException;
 
-	List<ClientCompany> getCompanyNames() throws DbException;
+	List<ClientCompany> findCompanyNames() throws DbException;
 
-	int getNoOfCompanies() throws DbException;
+	int count() throws DbException;
 
-	void updateCompanyDetails(String companyName, String contactPerson) throws DbException;
+	void update(String companyName, String contactPerson) throws DbException;
 
 }

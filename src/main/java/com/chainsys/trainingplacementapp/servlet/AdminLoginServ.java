@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.AdminLoginDAOImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.chainsys.trainingplacementapp.dao.AdminLoginDAO;
+import com.chainsys.trainingplacementapp.dao.impl.ClientCompanyDAOImpl;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/AdminLoginServ")
 public class AdminLoginServ extends HttpServlet {
@@ -18,13 +23,12 @@ public class AdminLoginServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		AdminLoginDAOImpl impl = new AdminLoginDAOImpl();
+		AdminLoginDAO impl=DAOFactory.getAdminLoginDAO();
 		String msg = null;
 		String mailId = request.getParameter("email");
 		String password = request.getParameter("pass");
 		try {
-			msg = impl.adminLogin(mailId, password);
+			msg = impl.findByAdminEmailAndPassword(mailId, password);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

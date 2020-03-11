@@ -9,24 +9,27 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.JoinDAO;
 import com.chainsys.trainingplacementapp.domain.JoinCompanySchedule;
 import com.chainsys.trainingplacementapp.domain.JoinUserCompany;
 import com.chainsys.trainingplacementapp.domain.JoinUserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class JoinDAOImpl implements JoinDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(JoinDAOImpl.class);
 
-	public List<JoinUserCourse> getUserCourseDetails(JoinUserCourse j) throws DbException {
+	public List<JoinUserCourse> findAllByCourseIdAndUserId(JoinUserCourse j) throws DbException {
 		List<JoinUserCourse> list = new ArrayList<JoinUserCourse>();
 		String sql = "select uc.user_id,c.course_id,c.course_name,c.course_fees,c.course_duration,uc.start_date,uc.completion_date,uc.total_amount from course c,usercourse uc where c.course_id=uc.course_id and uc.user_id=?";
-		log.getInput("");
-		log.getInput("***Display All UserCourse Details***");
-		log.getInput("");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Display All UserCourse Details***");
+		logger.info("");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setInt(1, j.getUserId());
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -52,12 +55,13 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public List<JoinUserCompany> getUserCompanyDetails(JoinUserCompany j) throws DbException {
+	public List<JoinUserCompany> findUsersByInterviewStatus(JoinUserCompany j) throws DbException {
 		List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
 		String sql = "select r.user_id,r.user_name,r.qualification,r.mail_id,r.mobile_no,r.gender,c.client_id,c.company_name,c.company_type,c.company_address,c.ph_no,c.contact_person,c.email_id,i.inter_status,i.marks from registration r,clientcmpy c,intervieww i where i.client_id = c.client_id and r.user_id=i.user_id and i.inter_status=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -84,12 +88,13 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public List<JoinUserCompany> getUserCompanyDetailsByMarks(JoinUserCompany j) throws DbException {
+	public List<JoinUserCompany> findUsersByInterviewMarks(JoinUserCompany j) throws DbException {
 		List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
 		String sql = "select r.user_id,r.user_name,r.qualification,r.mail_id,r.mobile_no,r.gender,c.client_id,c.company_name,c.company_type,c.company_address,c.ph_no,c.contact_person,c.email_id,i.inter_status,i.marks from registration r,clientcmpy c,intervieww i where i.client_id = c.client_id and r.user_id=i.user_id and i.marks=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -116,17 +121,18 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public List<JoinCompanySchedule> getCompanySchedule(String interviewDate) throws DbException {
+	public List<JoinCompanySchedule> findInterviewScheduleByInterviewDate(String interviewDate) throws DbException {
 		List<JoinCompanySchedule> list = new ArrayList<JoinCompanySchedule>();
 		String sql = "select cc.company_name,cc.company_type,cc.company_address,cc.ph_no,cc.contact_person,cc.email_id,s.job_title,s.job_requirement,s.interview_date,s.interview_time from clientcmpy cc,schedule s where \r\n"
 				+ "cc.client_id=s.client_id and s.interview_date=?";
-		log.getInput("***Display All Users Selected Details***");
-		log.getInput(sql);
+		logger.info("***Display All Users Selected Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setDate(1, Date.valueOf(interviewDate));
 			try (ResultSet rs = pst.executeQuery();) {
@@ -150,16 +156,17 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public List<JoinCompanySchedule> searchByJob(JoinCompanySchedule in) throws DbException {
+	public List<JoinCompanySchedule> findCompaniesByJobRequirementAndTitle(JoinCompanySchedule in) throws DbException {
 
 		List<JoinCompanySchedule> list = new ArrayList<JoinCompanySchedule>();
 		String sql = "select c.company_name,c.company_type,c.company_address,c.ph_no,c.contact_person,c.email_id,s.job_title,s.job_requirement,s.interview_date,s.interview_time from schedule s,clientcmpy c where s.client_id=c.client_id and s.job_requirement like ? or s.job_title=?";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, "%" + in.getJobRequirement() + "%");
 			pst.setString(2, in.getJobTitle());
@@ -184,12 +191,13 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public List<JoinUserCompany> getStatusByUserId(JoinUserCompany j) throws DbException {
+	public List<JoinUserCompany> findUserStatusByUserId(JoinUserCompany j) throws DbException {
 		List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
 		String sql = "select r.user_id,r.user_name,c.client_id,c.company_name,i.inter_status,i.marks from registration r,clientcmpy c,intervieww i where i.client_id = c.client_id and r.user_id=i.user_id and i.user_id=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -207,7 +215,8 @@ public class JoinDAOImpl implements JoinDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}

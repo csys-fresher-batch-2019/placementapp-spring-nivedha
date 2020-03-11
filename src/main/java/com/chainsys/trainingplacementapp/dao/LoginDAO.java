@@ -4,5 +4,5 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface LoginDAO {
 
-	public String[] login(String userName, String userPassword) throws DbException;
+	public String findByEmailAndPassword(String emailId, String userPassword) throws DbException;
 }

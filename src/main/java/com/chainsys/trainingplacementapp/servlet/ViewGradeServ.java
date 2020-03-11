@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.GradeDAOImpl;
+import com.chainsys.trainingplacementapp.dao.GradeDAO;
 import com.chainsys.trainingplacementapp.domain.Grade;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/ViewGradeServ")
 
@@ -22,10 +23,10 @@ public class ViewGradeServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		GradeDAOImpl impl = new GradeDAOImpl();
+		GradeDAO impl = DAOFactory.getGradeDAO();
 		List<Grade> list1 = new ArrayList<Grade>();
 		try {
-			list1 = impl.viewGrade();
+			list1 = impl.findAll();
 			request.setAttribute("view_grade", list1);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ViewGrade.jsp");
 			dispatcher.forward(request, response);

@@ -7,20 +7,20 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface CourseDAO {
 
-	void addCourses(Course list) throws DbException;
+	void save(Course list) throws DbException;
 
-	List<Course> allCourseDetails(String courseName) throws DbException;
+	List<Course> findByCourseName(String courseName) throws DbException;
 
-	void updateCourse(String courseName, int courseFees) throws DbException;
+	void update(String courseName, int courseFees) throws DbException;
 
-	int getFees(String courseName) throws DbException;
+	int findCourseFeesByCourseName(String courseName) throws DbException;
 
-	void deleteCourse(int courseId) throws DbException;
+	void delete(int courseId) throws DbException;
 
-	List<Course> getCourseNames() throws DbException;
+	List<Course> findCourseNames() throws DbException;
 
-	List<Course> getNamesByfeesRange(int fees1, int fees2) throws DbException;
+	List<Course> findCourseNamesByFees(int fees1, int fees2) throws DbException;
 
-	List<Course> getMinFeesCourses() throws DbException;
+	List<Course> findCourseNamesByMinFees() throws DbException;
 
 }

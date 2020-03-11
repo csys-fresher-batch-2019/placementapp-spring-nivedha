@@ -7,15 +7,15 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface RegistrationDAO {
 
-	int addUserDetails(Registration list) throws DbException;
+	int save(Registration list) throws DbException;
 
-	void updateUserDetails(int userId, long mobileNo) throws DbException;
+	void update(int userId, long mobileNo) throws DbException;
 
-	List<Registration> allUserDetails() throws DbException;
+	List<Registration> findAll() throws DbException;
 
-	void deleteUserDetails(int userId) throws DbException;
+	void delete(int userId) throws DbException;
 
-	int getNoOfUsers() throws DbException;
+	int count() throws DbException;
 
-	List<Registration> getDegreeWiseNoOfUsers() throws DbException;
+	List<Registration> findQualificationAndCount() throws DbException;
 }

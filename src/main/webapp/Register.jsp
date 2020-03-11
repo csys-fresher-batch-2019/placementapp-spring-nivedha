@@ -17,17 +17,17 @@ body {
 }
 </style>
 <body>
-<%String errorMessage = (String)request.getAttribute("errorMessage");
-if(errorMessage !=null)
-{%>
-<font color="red"style="font: bold"><%=errorMessage%>
-<%}%>
 
 <form action="RegistrationServ" autocomplete="off">
 <div style="text-align:centre">
 <pre>
 <br></br>
 <h1 style="color:white; font-size:30px; font-family:courier; text-align:centre;">                                REGISTRATION</h1>
+<%String errorMessage = (String)request.getAttribute("errorMessage");
+if(errorMessage !=null)
+{%>
+<font color="red"style="font: bold">                                                                           <%=errorMessage%>
+<%}%>
 
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Name           <input type="text" name="name" placeholder="Enter Name" required autofocus/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Password       <input type="password" name="password" placeholder="Enter password" required/>

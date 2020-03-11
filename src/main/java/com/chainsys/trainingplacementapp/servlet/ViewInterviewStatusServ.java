@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.chainsys.trainingplacementapp.dao.impl.JoinDAOImpl;
+import com.chainsys.trainingplacementapp.dao.JoinDAO;
 import com.chainsys.trainingplacementapp.domain.JoinUserCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/ViewInterviewStatusServ")
 
@@ -25,7 +26,7 @@ public class ViewInterviewStatusServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		JoinDAOImpl impl = new JoinDAOImpl();
+		JoinDAO impl = DAOFactory.getJoinDAO();
 		JoinUserCompany c = new JoinUserCompany();
 		HttpSession sess = request.getSession(false);
 		String userIdStr = (String) sess.getAttribute("userid");
@@ -37,7 +38,7 @@ public class ViewInterviewStatusServ extends HttpServlet {
 			List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
 			c.setUserId(userId);
 			try {
-				list = impl.getStatusByUserId(c);
+				list = impl.findUserStatusByUserId(c);
 				request.setAttribute("Interview_Status", list);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("InterviewStatus.jsp");
 				dispatcher.forward(request, response);

@@ -6,16 +6,19 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.TrainerDAO;
 import com.chainsys.trainingplacementapp.domain.Trainer;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class TrainerDAOImpl implements TrainerDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(TrainerDAOImpl.class);
 
-	public void addTrainerDetails(Trainer t) throws DbException {
+	public void save(Trainer t) throws DbException {
 
 		String sql = "insert into trainer(trainer_id,trainer_name,trainer_qualfication,trainer_specialist,trainer_experience,email_id,contact_number)values(trainer_id_sqn.nextval,?,?,?,?,?,?)";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -26,17 +29,18 @@ public class TrainerDAOImpl implements TrainerDAO {
 			pst.setString(5, t.getEmailId());
 			pst.setLong(6, t.getContactNumber());
 			int row = pst.executeUpdate();
-			log.getInput("***Added Trainer Details successfully***");
+			logger.info("***Added Trainer Details successfully***");
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
 		}
 	}
 
 	@Override
-	public List<Trainer> listTrainerDetails() throws DbException {
+	public List<Trainer> findAll() throws DbException {
 		List<Trainer> list = new ArrayList<Trainer>();
 		String sql = "select * from trainer";
-		log.getInput(sql);
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -52,7 +56,8 @@ public class TrainerDAOImpl implements TrainerDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}

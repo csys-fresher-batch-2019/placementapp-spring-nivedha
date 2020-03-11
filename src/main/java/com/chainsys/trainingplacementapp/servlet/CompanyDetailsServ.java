@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.ClientCompanyDAOImpl;
+import com.chainsys.trainingplacementapp.dao.ClientCompanyDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/CompanyDetailsServ")
 
@@ -22,10 +23,11 @@ public class CompanyDetailsServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ClientCompanyDAOImpl impl = new ClientCompanyDAOImpl();
+		
+		ClientCompanyDAO impl =DAOFactory.getClientCompanyDAO();
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		try {
-			list1 = impl.listCompanyDetails();
+			list1 = impl.findAll();
 			request.setAttribute("Company_Details", list1);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("CompanyDetails.jsp");
 			dispatcher.forward(request, response);

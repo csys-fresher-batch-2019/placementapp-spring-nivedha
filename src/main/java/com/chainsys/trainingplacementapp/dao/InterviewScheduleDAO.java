@@ -8,12 +8,12 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface InterviewScheduleDAO {
 
-	void addSchedule(InterviewSchedule list) throws DbException;
+	void save(InterviewSchedule list) throws DbException;
 
-	List<InterviewSchedule> allInterviewSchedules() throws DbException;
+	List<InterviewSchedule> findAllByInterviewDate() throws DbException;
 
-	void deleteSchedule(int interviewId) throws DbException;
+	void delete(int interviewId) throws DbException;
 
-	List<ClientCompany> getCompanyDetails(String jobTitle) throws DbException;
+	List<ClientCompany> findCompanyDetailsByJobRequirement(String jobRequirement) throws DbException;
 
 }

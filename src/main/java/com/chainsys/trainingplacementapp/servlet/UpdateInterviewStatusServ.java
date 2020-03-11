@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.impl.GradeDAOImpl;
-import com.chainsys.trainingplacementapp.dao.impl.InterviewPerformanceDAOImpl;
-import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
+import com.chainsys.trainingplacementapp.dao.GradeDAO;
+import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
 @WebServlet("/UpdateInterviewStatusServ")
 
@@ -21,17 +21,20 @@ public class UpdateInterviewStatusServ extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		InterviewPerformanceDAOImpl impl = new InterviewPerformanceDAOImpl();
-		InterviewPerformance p = new InterviewPerformance();
+		InterviewPerformanceDAO impl = DAOFactory.getInterviewPerformanceDAO();
 		int interviewId = Integer.parseInt(request.getParameter("interviewid"));
 		int marks = Integer.parseInt(request.getParameter("marks"));
 		try {
-			impl.updateInterviewMarks(marks, interviewId);
+			impl.updateInterviewMarksById(marks, interviewId);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
-		GradeDAOImpl grade = new GradeDAOImpl();
-		grade.updateStatus();
+		GradeDAO grade =DAOFactory.getGradeDAO();
+		try {
+			grade.updateStatusByMarks();
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 		response.sendRedirect("AllInterviewStatusServ");
 	}
 }

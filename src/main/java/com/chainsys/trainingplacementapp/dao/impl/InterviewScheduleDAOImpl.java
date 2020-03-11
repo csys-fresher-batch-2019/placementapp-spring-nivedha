@@ -9,21 +9,24 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.InterviewScheduleDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.domain.InterviewSchedule;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(InterviewScheduleDAOImpl.class);
 
-	public void addSchedule(InterviewSchedule schedule) throws DbException {
+	public void save(InterviewSchedule schedule) throws DbException {
 		String sql = "insert into schedule(interview_id,client_id,job_title,job_requirement,created_date,interview_date,interview_time)"
 				+ "values(interview_id_seq.nextval,?,?,?,?,?,?)";
-		log.getInput("***Add Interview Schedule Details***");
-		log.getInput(sql);
+		logger.info("***Add Interview Schedule Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, schedule.getClientId());
 			pst.setString(2, schedule.getJobTitle());
@@ -33,17 +36,18 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 			pst.setString(6, schedule.getInterviewTime().toString());
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
 		}
 	}
 
-	public List<InterviewSchedule> allInterviewSchedules() throws DbException {
+	public List<InterviewSchedule> findAllByInterviewDate() throws DbException {
 
 		List<InterviewSchedule> list = new ArrayList<InterviewSchedule>();
 		String sql = "select * from schedule where interview_date>=sysdate";
-		log.getInput("");
-		log.getInput("***Display Interview Schedule Details***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Display Interview Schedule Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -67,33 +71,35 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
-	public void deleteSchedule(int interviewId) throws DbException {
+	public void delete(int interviewId) throws DbException {
 
 		String sql = "delete from schedule where interview_id=?";
-		log.getInput("");
-		log.getInput("***Delete Interview Schedule Details***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Delete Interview Schedule Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, interviewId);
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_DELETE);
 		}
 	}
 
-	public List<ClientCompany> getCompanyDetails(String jobRequirement) throws DbException {
+	public List<ClientCompany> findCompanyDetailsByJobRequirement(String jobRequirement) throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		String sql = "select client_id,company_name,company_type,company_address,ph_no,contact_person,email_id from clientcmpy where client_id in (select client_id from schedule where job_requirement=?)";
-		log.getInput("");
-		log.getInput("***Display the company details based on the job title***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Display the company details based on the job title***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, jobRequirement);
 			try (ResultSet rs = pst.executeQuery();) {
@@ -110,7 +116,8 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list1;
 	}

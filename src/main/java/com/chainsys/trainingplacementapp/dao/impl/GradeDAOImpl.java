@@ -6,26 +6,32 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.GradeDAO;
 import com.chainsys.trainingplacementapp.domain.Grade;
+import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class GradeDAOImpl implements GradeDAO {
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(GradeDAOImpl.class);
 
 	@Override
-	public void updateStatus() {
+	public void updateStatusByMarks() throws DbException {
 		String sql = "update intervieww set inter_status=(select g.status from grade g where marks between g.min_marks and g.max_marks)";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_UPDATE);
+
 		}
 	}
 
 	@Override
-	public List<Grade> viewGrade() {
+	public List<Grade> findAll() throws DbException {
 		List<Grade> list = new ArrayList<Grade>();
 		String sql = "select * from grade";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
@@ -39,13 +45,14 @@ public class GradeDAOImpl implements GradeDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
 	@Override
-	public void updateGrade(int minMarks, int maxMarks, String status) {
+	public void updateMarksByStatus(int minMarks, int maxMarks, String status) throws DbException {
 		String sql = "update grade set min_marks=?,max_marks=? where status=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, minMarks);
@@ -53,7 +60,8 @@ public class GradeDAOImpl implements GradeDAO {
 			pst.setString(3, status);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_UPDATE);
 		}
 	}
 

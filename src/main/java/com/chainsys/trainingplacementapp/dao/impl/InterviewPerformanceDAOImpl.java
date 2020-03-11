@@ -6,38 +6,42 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
 import com.chainsys.trainingplacementapp.exception.DbException;
+import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 
-	private static final Logger log = Logger.getInstance();
+	private static final Logger logger = LoggerFactory.getLogger(InterviewPerformanceDAOImpl.class);
 
-	public void addPerformanceDetails(int clientId, int userId) throws DbException {
+	public void save(int clientId, int userId) throws DbException {
 		String sql = "insert into intervieww(sl_no,client_id,user_id)values(sl_no_sqn.nextval,?,?)";
-		log.getInput("");
-		log.getInput("***Add Interview Performance Details***");
-		log.getInput(sql);
+		logger.info("");
+		logger.info("***Add Interview Performance Details***");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, clientId);
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
-			log.getInput(row);
+			logger.info(""+row);
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_ADD);
 		}
 	}
 
-	public List<InterviewPerformance> viewPerformanceStatus() throws DbException {
+	public List<InterviewPerformance> findAll() throws DbException {
 
 		List<InterviewPerformance> list = new ArrayList<InterviewPerformance>();
 		String sql = "select sl_no,client_id,user_id,marks,inter_status from intervieww";
-		log.getInput("***Display Interview Performance Details***");
-		log.getInput("");
-		log.getInput(sql);
+		logger.info("***Display Interview Performance Details***");
+		logger.info("");
+		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -51,21 +55,24 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_SELECT);
 		}
 		return list;
 	}
 
 	@Override
-	public void updateInterviewMarks(int marks, int performId) throws DbException {
+	public void updateInterviewMarksById(int marks, int performId) throws DbException {
 		String sql = "update intervieww set marks=? where sl_no=?";
-		log.getInput("");
+		logger.info("");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, marks);
 			pst.setInt(2, performId);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			log.error(e);
+			logger.debug(e.getMessage());
+			throw new DbException(ErrorConstant.INVALID_UPDATE);
+
 		}
 	}
 }
