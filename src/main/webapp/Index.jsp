@@ -49,6 +49,7 @@ String userId = (String) sess.getAttribute("userid");
                             <li><a href="Register.jsp">SIGN UP</a></li>
                             <%}else { %>
                             <li><a href=#>WELCOME <%=userId %> !!!</a></li>
+                              <li><a href=UserCourseServ>MY ENROLLMENTS!!!</a></li>
                             <li><a href="Logout.jsp">SIGN OUT</a></li>
                             <%} %>
                             <li><a href="AdminLogin.html">ADMIN</a></li>
