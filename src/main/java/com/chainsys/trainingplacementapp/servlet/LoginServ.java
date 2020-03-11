@@ -24,29 +24,22 @@ public class LoginServ extends HttpServlet {
 
 	@Autowired
 	private LoginService loginService;
-	
-	private static final Logger log = Logger.getInstance();
+
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		LoginDAO impl = DAOFactory.getLoginDAO();
 		String userName = request.getParameter("name");
 		String userPassword = request.getParameter("password");
 		HttpSession sess = request.getSession();
 		try {
 			String a = loginService.loginDetails(userName, userPassword);
-			//String a=impl.findByEmailAndPassword(userName, userPassword);
-			
-			System.out.println(a);
-			if(a!=null)
-			{
+			if (a != null) {
 				sess.setAttribute("userid", a);
 				response.sendRedirect("HomeCourse.jsp");
-			}
-			else
+			} else
 				response.sendRedirect("Login.jsp?errorMessage=Invalid Login");
-			
-		 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("errorMessage", e.getMessage());

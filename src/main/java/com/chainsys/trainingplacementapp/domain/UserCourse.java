@@ -1,17 +1,16 @@
 package com.chainsys.trainingplacementapp.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class UserCourse {
 
-	private  int userCourseId;
-	private  int userId;
-	private  int courseId;
-	private  LocalDate startDate;
-	private  LocalDate completionDate;
+	private int userCourseId;
+	private int userId;
+	private int courseId;
+	private LocalDate startDate;
+	private LocalDate completionDate;
 	private double totalAmount;
-	
+
 	public int getUserCourseId() {
 		return userCourseId;
 	}
@@ -63,6 +62,7 @@ public class UserCourse {
 	@Override
 	public String toString() {
 		return "UserCourse [userCourseId=" + userCourseId + ", userId=" + userId + ", courseId=" + courseId
-				+ ", startDate=" + startDate + ", completionDate=" + completionDate + ", totalAmount=" + totalAmount + "]";
-	} 
+				+ ", startDate=" + startDate + ", completionDate=" + completionDate + ", totalAmount=" + totalAmount
+				+ "]";
+	}
 }

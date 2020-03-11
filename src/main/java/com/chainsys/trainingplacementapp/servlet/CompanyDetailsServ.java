@@ -23,8 +23,8 @@ public class CompanyDetailsServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		ClientCompanyDAO impl =DAOFactory.getClientCompanyDAO();
+
+		ClientCompanyDAO impl = DAOFactory.getClientCompanyDAO();
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
 		try {
 			list1 = impl.findAll();

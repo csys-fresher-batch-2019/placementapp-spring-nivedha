@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
@@ -28,10 +27,9 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 			pst.setInt(1, clientId);
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
-			logger.info(""+row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
+			throw new DbException("Unable to Add Interview Performance Details", e);
 		}
 	}
 
@@ -55,8 +53,7 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Interview Performance Details", e);
 		}
 		return list;
 	}
@@ -70,9 +67,7 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 			pst.setInt(2, performId);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
-
+			throw new DbException("Unable to Update Interview Marks", e);
 		}
 	}
 }

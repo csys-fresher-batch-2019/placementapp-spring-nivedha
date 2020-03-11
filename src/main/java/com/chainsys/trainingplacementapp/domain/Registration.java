@@ -9,7 +9,7 @@ public class Registration {
 	private long mobileNo;
 	private String qualification;
 	private String gender;
-	
+
 	public int getUserId() {
 		return userId;
 	}

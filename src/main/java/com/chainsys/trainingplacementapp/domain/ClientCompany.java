@@ -1,14 +1,14 @@
 package com.chainsys.trainingplacementapp.domain;
 
 public class ClientCompany {
-	private  int clientId;
-	private  String companyName;
-	private  String companyType;
-	private  String companyAddress;
-	private  long phoneNo;
-	private  String contactPerson;
-	private  String emailId; 
-	
+	private int clientId;
+	private String companyName;
+	private String companyType;
+	private String companyAddress;
+	private long phoneNo;
+	private String contactPerson;
+	private String emailId;
+
 	public int getClientId() {
 		return clientId;
 	}
@@ -66,17 +66,17 @@ public class ClientCompany {
 	}
 
 	public String toString() {
-	
-	StringBuffer content=new StringBuffer();
-	content.append("ClientId = ").append(clientId+" ");
-	content.append("CompanyName = ").append(companyName+" ");
-	content.append("CompanyType = ").append(companyType+" ");
-	content.append("CompanyAddress = ").append(companyAddress+" ");
-	content.append("PhoneNo = ").append(phoneNo+" ");
-	content.append("ContactPerson = ").append(contactPerson+" ");
-	content.append("EmailId = ").append(emailId+" ");
-	return content.toString();
-	
-    }
-	
+
+		StringBuffer content = new StringBuffer();
+		content.append("ClientId = ").append(clientId + " ");
+		content.append("CompanyName = ").append(companyName + " ");
+		content.append("CompanyType = ").append(companyType + " ");
+		content.append("CompanyAddress = ").append(companyAddress + " ");
+		content.append("PhoneNo = ").append(phoneNo + " ");
+		content.append("ContactPerson = ").append(contactPerson + " ");
+		content.append("EmailId = ").append(emailId + " ");
+		return content.toString();
+
+	}
+
 }

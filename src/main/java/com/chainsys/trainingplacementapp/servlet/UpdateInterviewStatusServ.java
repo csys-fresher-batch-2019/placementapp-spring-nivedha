@@ -29,7 +29,7 @@ public class UpdateInterviewStatusServ extends HttpServlet {
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
-		GradeDAO grade =DAOFactory.getGradeDAO();
+		GradeDAO grade = DAOFactory.getGradeDAO();
 		try {
 			grade.updateStatusByMarks();
 		} catch (DbException e) {

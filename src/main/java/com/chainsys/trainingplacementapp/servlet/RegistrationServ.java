@@ -22,9 +22,9 @@ import com.chainsys.trainingplacementapp.util.Logger;
 
 @WebServlet("/RegistrationServ")
 public class RegistrationServ extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Autowired
 	private RegistrationService registrationService;
 
@@ -45,22 +45,21 @@ public class RegistrationServ extends HttpServlet {
 		reg1.setGender(request.getParameter("gender"));
 		list.add(reg1);
 		boolean status = false;
-		RegistrationDAO dao= DAOFactory.getRegistrationDAO();
+		RegistrationDAO dao = DAOFactory.getRegistrationDAO();
 		try {
-			List<Registration> list1= dao.findAll();
-			for(Registration r : list1) {
+			List<Registration> list1 = dao.findAll();
+			for (Registration r : list1) {
 				long m = r.getMobileNo();
 				String mail = r.getMailId();
-				if(m == ph || mail.equals(id)) {
+				if (m == ph || mail.equals(id)) {
 					status = true;
 				}
 			}
-			if(status) {
+			if (status) {
 				request.setAttribute("errorMessage", "Registered Already!! login...");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
 				dispatcher.forward(request, response);
-			}
-			else {
+			} else {
 				for (Registration register : list) {
 					registrationService.addUserDetails(register);
 					log.info(register);
@@ -68,13 +67,12 @@ public class RegistrationServ extends HttpServlet {
 				}
 				out.println(reg1.getUserName() + " " + "inserted successfully");
 			}
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("errorMessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
-			dispatcher.forward(request, response);	
+			dispatcher.forward(request, response);
 		}
-		
+
 	}
 }

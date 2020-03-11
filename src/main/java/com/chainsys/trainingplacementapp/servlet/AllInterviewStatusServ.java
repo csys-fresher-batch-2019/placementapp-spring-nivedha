@@ -22,7 +22,7 @@ public class AllInterviewStatusServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        InterviewPerformanceDAO impl=DAOFactory.getInterviewPerformanceDAO();
+		InterviewPerformanceDAO impl = DAOFactory.getInterviewPerformanceDAO();
 		List<InterviewPerformance> list = new ArrayList<InterviewPerformance>();
 		try {
 			list = impl.findAll();

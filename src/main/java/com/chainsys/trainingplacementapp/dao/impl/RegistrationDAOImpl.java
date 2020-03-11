@@ -13,14 +13,14 @@ import org.springframework.stereotype.Repository;
 import com.chainsys.trainingplacementapp.dao.RegistrationDAO;
 import com.chainsys.trainingplacementapp.domain.Registration;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
+
 @Repository
 public class RegistrationDAOImpl implements RegistrationDAO {
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationDAOImpl.class);
 
 	public int save(Registration reg) throws DbException {
-       int row = 0;
+		int row = 0;
 		String sql = "insert into registration(user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender) values(user_id_seq.nextval,?,?,?,?,?,?,?)";
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
@@ -31,11 +31,10 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			stmt.setString(5, reg.getMailId());
 			stmt.setString(6, reg.getQualification());
 			stmt.setString(7, reg.getGender());
-			 row = stmt.executeUpdate();
-			logger.info(""+row);
+			row = stmt.executeUpdate();
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
+			throw new DbException("Unable to Add User Details", e);
 		}
 		return row;
 	}
@@ -48,17 +47,16 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pst.setLong(1, mobileNo);
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
-			logger.info(""+row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
+			throw new DbException("Unable to Update Mobile Number", e);
 		}
 	}
 
 	public List<Registration> findAll() throws DbException {
 
 		List<Registration> list1 = new ArrayList<Registration>();
-		String sql = "select * from registration";
+		String sql = "select user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender from registration";
 		logger.info("***Display User Details***");
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
@@ -77,9 +75,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find User Details", e);
 		}
 		return list1;
 	}
@@ -91,11 +87,9 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
 			int row = pst.executeUpdate();
-			logger.info(""+row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_DELETE);
-
+			throw new DbException("Unable to Delete User Details", e);
 		}
 	}
 
@@ -104,18 +98,17 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		String sql = "select count(user_id) from registration";
 		logger.info("***Display the No of Users***");
 		logger.info(sql);
-		int a = 0;
+		int count = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
-					a = rs.getInt("count(user_id)");
+					count = rs.getInt("count(user_id)");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Count User Details", e);
 		}
-		return a;
+		return count;
 	}
 
 	public List<Registration> findQualificationAndCount() throws DbException {
@@ -134,8 +127,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find User Qualification Details", e);
 		}
 		return list1;
 	}

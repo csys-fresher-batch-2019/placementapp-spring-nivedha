@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class UserCourseDAOImpl implements UserCourseDAO {
@@ -35,36 +34,34 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 			pst.setDate(4, Date.valueOf(uc.getCompletionDate()));
 			pst.setDouble(5, uc.getTotalAmount());
 			int row = pst.executeUpdate();
-			logger.info(""+row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
+			throw new DbException("Unable to Add User Course Details", e);
 		}
 	}
 
 	public int findCourseDurationByCourseId(int courseId) throws DbException {
 		String sql = "select course_duration from course where course_id =?";
-		logger.info(""+courseId);
+		logger.info("" + courseId);
 		logger.info("***Display Course Duration Details***");
-		int a = 0;
+		int courseDuration = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, courseId);
 			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					a = rs.getInt("course_duration");
+					courseDuration = rs.getInt("course_duration");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Course Duration", e);
 		}
-		return a;
+		return courseDuration;
 	}
 
 	public List<UserCourse> findAllByUserId(int userId) throws DbException {
 
 		List<UserCourse> list1 = new ArrayList<UserCourse>();
-		String sql = "select * from usercourse where user_id=?";
+		String sql = "select user_course_id,user_id,course_id,start_date,completion_date,total_amount from usercourse where user_id=?";
 		logger.info("***Display UserCourse Details***");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
@@ -89,9 +86,7 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find User Course Details", e);
 		}
 		return list1;
 	}

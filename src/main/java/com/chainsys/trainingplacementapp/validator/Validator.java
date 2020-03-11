@@ -34,7 +34,7 @@ public class Validator {
 		}
 	}
 
-	public static void validateLogin(String emailId,String password) throws ValidatorException {
+	public static void validateLogin(String emailId, String password) throws ValidatorException {
 		if (emailId == null || "".equals(emailId.trim())) {
 			throw new ValidatorException("Mail-id cannot be blank/empty");
 		}

@@ -27,53 +27,52 @@ import com.chainsys.trainingplacementapp.dao.impl.UserCourseDAOImpl;
 
 public class DAOFactory {
 
-	public static ClientCompanyDAO getClientCompanyDAO()
-	{
+	public static ClientCompanyDAO getClientCompanyDAO() {
 		return new ClientCompanyDAOImpl();
 	}
-	public static CourseDAO getCourseDAO()
-	{
+
+	public static CourseDAO getCourseDAO() {
 		return new CourseDAOImpl();
 	}
-	public static CommentsDAO getCommentsDAO()
-	{
+
+	public static CommentsDAO getCommentsDAO() {
 		return new CommentsDAOImpl();
 	}
-	public static RegistrationDAO getRegistrationDAO()
-	{
+
+	public static RegistrationDAO getRegistrationDAO() {
 		return new RegistrationDAOImpl();
 	}
-	public static GradeDAO getGradeDAO()
-	{
+
+	public static GradeDAO getGradeDAO() {
 		return new GradeDAOImpl();
 	}
-	public static InterviewPerformanceDAO getInterviewPerformanceDAO()
-	{
+
+	public static InterviewPerformanceDAO getInterviewPerformanceDAO() {
 		return new InterviewPerformanceDAOImpl();
 	}
-	public static InterviewScheduleDAO getInterviewScheduleDAO()
-	{
+
+	public static InterviewScheduleDAO getInterviewScheduleDAO() {
 		return new InterviewScheduleDAOImpl();
 	}
-	public static LoginDAO getLoginDAO()
-	{
+
+	public static LoginDAO getLoginDAO() {
 		return new LoginDAOImpl();
 	}
-	public static TrainerDAO getTrainerDAO()
-	{
+
+	public static TrainerDAO getTrainerDAO() {
 		return new TrainerDAOImpl();
 	}
-	public static UserCourseDAO getUserCourseDAO()
-	{
+
+	public static UserCourseDAO getUserCourseDAO() {
 		return new UserCourseDAOImpl();
 	}
-	public static AdminLoginDAO getAdminLoginDAO()
-	{
+
+	public static AdminLoginDAO getAdminLoginDAO() {
 		return new AdminLoginDAOImpl();
 	}
-	public static JoinDAO getJoinDAO()
-	{
+
+	public static JoinDAO getJoinDAO() {
 		return new JoinDAOImpl();
 	}
-	
+
 }

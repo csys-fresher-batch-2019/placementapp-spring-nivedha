@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ page import="com.chainsys.trainingplacementapp.dao.impl.JoinDAOImpl" %>
-        <%@ page import="com.chainsys.trainingplacementapp.domain.JoinUserCompany" %>
+        <%@ page import="com.chainsys.trainingplacementapp.domain.UserCompanyDTO" %>
             <%@ page import="java.util.List" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,8 +20,8 @@ body {
 <body>
 
 <%
-JoinDAOImpl impl=new JoinDAOImpl();
-List<JoinUserCompany> list=(List<JoinUserCompany>)request.getAttribute("Interview_Status");
+	JoinDAOImpl impl=new JoinDAOImpl();
+List<UserCompanyDTO> list=(List<UserCompanyDTO>)request.getAttribute("Interview_Status");
 %>
 <h1 style="color:white; font-size:25px; font-family:courier; text-align:centre;">USER INTERVIEW STATUS</h1>
 <table border="1">
@@ -36,8 +36,10 @@ List<JoinUserCompany> list=(List<JoinUserCompany>)request.getAttribute("Intervie
 </tr>
 </thead>
 
-<%  for(JoinUserCompany j:list)
-{%>
+<%
+	for(UserCompanyDTO j:list)
+{
+%>
 <tr>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getUserId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getUserName()%></h1></td>

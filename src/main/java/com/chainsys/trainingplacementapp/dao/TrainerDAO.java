@@ -7,7 +7,7 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface TrainerDAO {
 
-	public void save(Trainer t) throws DbException;
+	public void save(Trainer trainer) throws DbException;
 
 	List<Trainer> findAll() throws DbException;
 }

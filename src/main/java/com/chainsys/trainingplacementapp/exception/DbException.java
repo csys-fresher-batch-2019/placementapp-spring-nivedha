@@ -2,7 +2,9 @@ package com.chainsys.trainingplacementapp.exception;
 
 public class DbException extends Exception {
 
-	public DbException(String msg) {
-		super(msg);
+	private static final long serialVersionUID = 1L;
+
+	public DbException(String msg, Throwable e) {
+		super(msg, e);
 	}
 }

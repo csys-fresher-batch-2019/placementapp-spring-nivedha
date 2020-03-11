@@ -9,7 +9,7 @@ public class Trainer {
 	private int trainerExperience;
 	private String emailId;
 	private Long contactNumber;
-	
+
 	public int getTrainerId() {
 		return trainerId;
 	}

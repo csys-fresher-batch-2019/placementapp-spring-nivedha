@@ -5,5 +5,5 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface AdminLoginDAO {
 
-	public String findByAdminEmailAndPassword(AdminLogin a) throws DbException;
+	public String findByAdminEmailAndPassword(AdminLogin adminLogin) throws DbException;
 }

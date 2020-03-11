@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.ClientCompanyDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class ClientCompanyDAOImpl implements ClientCompanyDAO {
@@ -34,16 +33,14 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			int row = pst.executeUpdate();
 			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
-
+			throw new DbException("Unable to Add Company Details", e);
 		}
 	}
 
 	public List<ClientCompany> findAll() throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
-		String sql = "select * from clientcmpy";
+		String sql = "select client_id,company_name,company_type,company_address,ph_no,contact_person,email_id from clientcmpy";
 		logger.info("***Display All Company Details***");
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
@@ -61,9 +58,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Company Details", e);
 		}
 		return list1;
 	}
@@ -90,9 +85,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Company Names", e);
 		}
 		return list1;
 	}
@@ -107,9 +100,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			int row = pst.executeUpdate();
 			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_DELETE);
-
+			throw new DbException("Unable to Delete Company Details", e);
 		}
 	}
 
@@ -121,16 +112,14 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
-				while (rs.next()) {
+				if (rs.next()) {
 					ClientCompany cc = new ClientCompany();
 					cc.setCompanyName(rs.getString("company_name"));
 					list1.add(cc);
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Company Names", e);
 		}
 		return list1;
 	}
@@ -139,19 +128,17 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 
 		String sql = "select count(company_name) from clientcmpy";
 		logger.info(sql);
-		int a = 0;
+		int count = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
-				while (rs.next()) {
-					a = rs.getInt("count(company_name)");
+				if (rs.next()) {
+					count = rs.getInt("count(company_name)");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Count Company Details", e);
 		}
-		return a;
+		return count;
 	}
 
 	public void update(String companyName, String contactPerson) throws DbException {
@@ -163,9 +150,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setString(2, companyName);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
-
+			throw new DbException("Unable to Update Contact Person", e);
 		}
 	}
 }

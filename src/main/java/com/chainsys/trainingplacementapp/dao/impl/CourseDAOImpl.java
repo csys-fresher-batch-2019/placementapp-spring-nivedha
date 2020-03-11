@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.CourseDAO;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class CourseDAOImpl implements CourseDAO {
@@ -38,8 +37,7 @@ public class CourseDAOImpl implements CourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Course Details", e);
 		}
 		return list;
 	}
@@ -52,8 +50,7 @@ public class CourseDAOImpl implements CourseDAO {
 			pst.setString(2, courseName);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
+			throw new DbException("Unable to Update Course Fees", e);
 		}
 	}
 
@@ -61,20 +58,18 @@ public class CourseDAOImpl implements CourseDAO {
 
 		String sql = "select course_fees from course where course_name=?";
 		logger.info("***Display " + courseName + " Fees Details***");
-		int a = 0;
+		int courseFees = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, courseName);
 			try (ResultSet rs = pst.executeQuery();) {
-				while (rs.next()) {
-					a = rs.getInt("course_fees");
+				if (rs.next()) {
+					courseFees = rs.getInt("course_fees");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Course Fees", e);
 		}
-		return a;
+		return courseFees;
 	}
 
 	public List<Course> findCourseNames() throws DbException {
@@ -84,16 +79,14 @@ public class CourseDAOImpl implements CourseDAO {
 		logger.info("***Display All Course Names***");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
-
-				while (rs.next()) {
+				if (rs.next()) {
 					Course c = new Course();
 					c.setCourseName(rs.getString("course_name"));
 					list.add(c);
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Course Name", e);
 
 		}
 		return list;
@@ -107,8 +100,7 @@ public class CourseDAOImpl implements CourseDAO {
 			pst.setInt(1, courseId);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_DELETE);
+			throw new DbException("Unable to Delete Course Details", e);
 
 		}
 	}
@@ -125,9 +117,7 @@ public class CourseDAOImpl implements CourseDAO {
 			pst.setString(5, cl.getCourseImage());
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
-
+			throw new DbException("Unable to Add Course Details", e);
 		}
 	}
 
@@ -147,9 +137,7 @@ public class CourseDAOImpl implements CourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Course Name and Fees", e);
 		}
 		return list;
 	}
@@ -170,9 +158,7 @@ public class CourseDAOImpl implements CourseDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Minimum Course Fees", e);
 		}
 		return list;
 	}

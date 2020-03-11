@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.GradeDAO;
 import com.chainsys.trainingplacementapp.domain.Grade;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class GradeDAOImpl implements GradeDAO {
@@ -24,16 +23,14 @@ public class GradeDAOImpl implements GradeDAO {
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
-
+			throw new DbException("Unable to Update Interview Status", e);
 		}
 	}
 
 	@Override
 	public List<Grade> findAll() throws DbException {
 		List<Grade> list = new ArrayList<Grade>();
-		String sql = "select * from grade";
+		String sql = "select min_marks,max_marks,status from grade";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
@@ -45,8 +42,7 @@ public class GradeDAOImpl implements GradeDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Grade Details", e);
 		}
 		return list;
 	}
@@ -60,8 +56,7 @@ public class GradeDAOImpl implements GradeDAO {
 			pst.setString(3, status);
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_UPDATE);
+			throw new DbException("Unable to Update Marks", e);
 		}
 	}
 

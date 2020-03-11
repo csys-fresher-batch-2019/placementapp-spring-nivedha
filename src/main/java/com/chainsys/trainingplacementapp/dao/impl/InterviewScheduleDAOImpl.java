@@ -16,7 +16,6 @@ import com.chainsys.trainingplacementapp.dao.InterviewScheduleDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.domain.InterviewSchedule;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
@@ -36,15 +35,14 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 			pst.setString(6, schedule.getInterviewTime().toString());
 			int row = pst.executeUpdate();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
+			throw new DbException("Unable to Add Interview Schedule Details", e);
 		}
 	}
 
 	public List<InterviewSchedule> findAllByInterviewDate() throws DbException {
 
 		List<InterviewSchedule> list = new ArrayList<InterviewSchedule>();
-		String sql = "select * from schedule where interview_date>=sysdate";
+		String sql = "select interview_id,client_id,job_title,job_requirement,created_date,interview_date,interview_time from schedule where interview_date>=sysdate";
 		logger.info("");
 		logger.info("***Display Interview Schedule Details***");
 		logger.info(sql);
@@ -71,8 +69,7 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Interview Schedule Details", e);
 		}
 		return list;
 	}
@@ -86,10 +83,9 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, interviewId);
 			int row = pst.executeUpdate();
-			logger.info(""+row);
+			logger.info("" + row);
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_DELETE);
+			throw new DbException("Unable to Delete Interview Schedule Details", e);
 		}
 	}
 
@@ -116,8 +112,7 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable Find Company Details", e);
 		}
 		return list1;
 	}

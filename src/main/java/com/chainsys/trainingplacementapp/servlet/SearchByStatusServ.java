@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.chainsys.trainingplacementapp.dao.JoinDAO;
-import com.chainsys.trainingplacementapp.domain.JoinUserCompany;
+import com.chainsys.trainingplacementapp.domain.UserCompanyDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
@@ -25,8 +25,8 @@ public class SearchByStatusServ extends HttpServlet {
 			throws ServletException, IOException {
 
 		JoinDAO impl = DAOFactory.getJoinDAO();
-		List<JoinUserCompany> list = new ArrayList<JoinUserCompany>();
-		JoinUserCompany c = new JoinUserCompany();
+		List<UserCompanyDTO> list = new ArrayList<UserCompanyDTO>();
+		UserCompanyDTO c = new UserCompanyDTO();
 		c.setInterStatus(request.getParameter("status"));
 		list.add(c);
 		try {

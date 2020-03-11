@@ -1,5 +1,5 @@
 <%@page import="com.chainsys.trainingplacementapp.dao.impl.JoinDAOImpl"%>
-<%@page import="com.chainsys.trainingplacementapp.domain.JoinUserCompany"%>
+<%@page import="com.chainsys.trainingplacementapp.domain.UserCompanyDTO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
@@ -25,8 +25,8 @@ body {
 
 <h1 style="color:white; font-size:25px; font-family:courier; text-align:centre;">VIEW INTERVIEW STATUS</h1>
 <%
-JoinDAOImpl impl=new JoinDAOImpl();
-List<JoinUserCompany> list=(List<JoinUserCompany>)request.getAttribute("view_status");
+	JoinDAOImpl impl=new JoinDAOImpl();
+List<UserCompanyDTO> list=(List<UserCompanyDTO>)request.getAttribute("view_status");
 %>
 <table border="1">
 <thead>
@@ -42,8 +42,10 @@ List<JoinUserCompany> list=(List<JoinUserCompany>)request.getAttribute("view_sta
 </tr>
 </thead>
 
-<% for(JoinUserCompany j:list)
-{%>
+<%
+	for(UserCompanyDTO j:list)
+{
+%>
 <tr>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getUserId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getUserName()%></h1></td>

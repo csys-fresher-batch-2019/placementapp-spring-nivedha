@@ -1,7 +1,6 @@
 package com.chainsys.trainingplacementapp.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,11 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.chainsys.trainingplacementapp.dao.AdminLoginDAO;
-import com.chainsys.trainingplacementapp.dao.impl.ClientCompanyDAOImpl;
+import com.chainsys.trainingplacementapp.domain.AdminLogin;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.factory.DAOFactory;
 
@@ -23,12 +19,13 @@ public class AdminLoginServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		AdminLoginDAO impl=DAOFactory.getAdminLoginDAO();
+		AdminLoginDAO impl = DAOFactory.getAdminLoginDAO();
 		String msg = null;
-		String mailId = request.getParameter("email");
-		String password = request.getParameter("pass");
+		AdminLogin adminLogin = new AdminLogin();
+		adminLogin.setMailId(request.getParameter("email"));
+		adminLogin.setPassword(request.getParameter("pass"));
 		try {
-			msg = impl.findByAdminEmailAndPassword(mailId, password);
+			msg = impl.findByAdminEmailAndPassword(adminLogin);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

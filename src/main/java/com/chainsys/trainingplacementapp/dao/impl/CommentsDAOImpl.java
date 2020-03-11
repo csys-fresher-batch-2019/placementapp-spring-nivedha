@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.chainsys.trainingplacementapp.dao.CommentsDAO;
 import com.chainsys.trainingplacementapp.domain.Comments;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class CommentsDAOImpl implements CommentsDAO {
@@ -29,62 +28,55 @@ public class CommentsDAOImpl implements CommentsDAO {
 			int row = pst.executeUpdate();
 			logger.info("***Comments Added successfully***");
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_ADD);
+			throw new DbException("Unable to Add Comments", e);
 		}
 	}
 
 	public String findUserNameByUserCourseId(int userCourseId) throws DbException {
 		String sql = "select user_name from registration where user_id=(select user_id from usercourse where user_course_id=?)";
-		String a = null;
+		String userName = null;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setInt(1, userCourseId);
 			try (ResultSet rs = stmt.executeQuery();) {
-				while (rs.next()) {
-					a = rs.getString("user_name");
+				if (rs.next()) {
+					userName = rs.getString("user_name");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find UserName", e);
 		}
-		return a;
+		return userName;
 	}
 
 	public String findCourseNameByUserCourseId(int userCourseId) throws DbException {
 		String sql = "select course_name from course where course_id=(select course_id from usercourse where user_course_id=?)";
-		String a = null;
+		String courseName = null;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setInt(1, userCourseId);
 			try (ResultSet rs = stmt.executeQuery();) {
-				while (rs.next()) {
-					a = rs.getString("course_name");
+				if (rs.next()) {
+					courseName = rs.getString("course_name");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Course Name", e);
 		}
-		return a;
+		return courseName;
 	}
 
 	public String findTrainerNameById(int trainerId) throws DbException {
 		String sql = "select trainer_name from trainer where trainer_id=?";
-		String b = null;
+		String TrainerName = null;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setInt(1, trainerId);
 			try (ResultSet rs = stmt.executeQuery();) {
-				while (rs.next()) {
-					b = rs.getString("trainer_name");
+				if (rs.next()) {
+					TrainerName = rs.getString("trainer_name");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
-
+			throw new DbException("Unable to Find Trainer Name", e);
 		}
-		return b;
+		return TrainerName;
 	}
 }

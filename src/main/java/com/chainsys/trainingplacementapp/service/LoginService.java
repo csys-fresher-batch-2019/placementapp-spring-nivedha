@@ -16,12 +16,13 @@ public class LoginService {
 	Validator validator;
 	@Autowired
 	LoginDAO loginDAO;
-	Registration r=new Registration();
+	Registration r = new Registration();
+
 	public String loginDetails(String userName, String userPassword) throws ServiceException {
 		String a = null;
 		try {
-			Validator.validateLogin(userName,userPassword);
-			a=loginDAO.findByEmailAndPassword(userName,userPassword);
+			Validator.validateLogin(userName, userPassword);
+			a = loginDAO.findByEmailAndPassword(userName, userPassword);
 		} catch (DbException e) {
 			throw new ServiceException(e);
 		} catch (ValidatorException e) {

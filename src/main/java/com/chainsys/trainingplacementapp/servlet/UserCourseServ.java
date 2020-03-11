@@ -28,7 +28,7 @@ public class UserCourseServ extends HttpServlet {
 		int userId;
 		HttpSession sess = request.getSession(false);
 		userId = Integer.parseInt((String) sess.getAttribute("userid"));
-		UserCourseDAO impl1 =DAOFactory.getUserCourseDAO();
+		UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
 		UserCourse uc1 = new UserCourse();
 		uc1.setUserId(userId);
 		List<UserCourse> list1 = new ArrayList<UserCourse>();

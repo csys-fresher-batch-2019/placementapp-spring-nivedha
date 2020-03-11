@@ -17,6 +17,7 @@ public class RegistrationService {
 	Validator validator;
 	@Autowired
 	RegistrationDAO registrationDAO;
+
 	public void addUserDetails(Registration registration) throws ServiceException {
 		try {
 			Validator.validateRegistration(registration);
@@ -27,5 +28,5 @@ public class RegistrationService {
 			throw new ServiceException(e.getMessage(), e);
 		}
 	}
-	
+
 }

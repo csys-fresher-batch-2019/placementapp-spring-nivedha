@@ -2,17 +2,17 @@ package com.chainsys.trainingplacementapp.domain;
 
 import java.time.LocalDate;
 
-public class JoinUserCourse {
+public class UserCourseDTO {
 
-	private  int courseId; 
-	private  String courseName;
-	private  int courseDuration;
-	private  int courseFees;
-	private  int userId;
-	private  LocalDate startDate;
-	private  LocalDate completionDate;
+	private int courseId;
+	private String courseName;
+	private int courseDuration;
+	private int courseFees;
+	private int userId;
+	private LocalDate startDate;
+	private LocalDate completionDate;
 	private double totalAmount;
-	
+
 	public int getCourseId() {
 		return courseId;
 	}
@@ -80,8 +80,8 @@ public class JoinUserCourse {
 	@Override
 	public String toString() {
 		return "JoinUserCourse [courseId=" + courseId + ", courseName=" + courseName + ", courseDuration="
-				+ courseDuration + ", courseFees=" + courseFees + ", userId=" + userId + ", startDate=" + startDate + ", completionDate="
-				+ completionDate + ", totalAmount=" + totalAmount + "]";
+				+ courseDuration + ", courseFees=" + courseFees + ", userId=" + userId + ", startDate=" + startDate
+				+ ", completionDate=" + completionDate + ", totalAmount=" + totalAmount + "]";
 	}
-	
+
 }

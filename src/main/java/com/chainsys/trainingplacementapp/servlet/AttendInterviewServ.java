@@ -21,7 +21,7 @@ public class AttendInterviewServ extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("AttendInterviewServlet");
-		InterviewPerformanceDAO impl=DAOFactory.getInterviewPerformanceDAO();
+		InterviewPerformanceDAO impl = DAOFactory.getInterviewPerformanceDAO();
 		HttpSession sess = request.getSession();
 		int clientId = Integer.parseInt(request.getParameter("Client_id"));
 		String userIdStr = (String) sess.getAttribute("userid");

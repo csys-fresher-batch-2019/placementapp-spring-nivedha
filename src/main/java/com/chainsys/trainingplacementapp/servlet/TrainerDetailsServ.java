@@ -23,7 +23,7 @@ public class TrainerDetailsServ extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		List<Trainer> list = new ArrayList<Trainer>();
 		TrainerDAO impl1 = DAOFactory.getTrainerDAO();
 		try {

@@ -28,7 +28,6 @@ public class CourseDetailsServ extends HttpServlet {
 			throws ServletException, IOException {
 
 		List<Course> list = new ArrayList<Course>();
-		PrintWriter out = response.getWriter();
 		String courseName = request.getParameter("courseName");
 		CourseDAO obj = DAOFactory.getCourseDAO();
 		try {

@@ -20,19 +20,18 @@ public class DiscountCalculation {
 		String sql = "select count(user_id) from usercourse where user_id=?";
 		logger.info("***Display " + userId + " count***");
 		logger.info(sql);
-		int a = 0;
+		int count = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
 			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					a = rs.getInt("count(user_id)");
+					count = rs.getInt("count(user_id)");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to count UserCourse Details",e);
 		}
-		return a;
+		return count;
 	}
 
 	public int findFeesByCourseId(int courseId) throws DbException {
@@ -41,18 +40,17 @@ public class DiscountCalculation {
 		logger.info("");
 		logger.info("***Display " + courseId + " Fees Details***");
 		logger.info(sql);
-		int a = 0;
+		int courseFees = 0;
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, courseId);
 			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					a = rs.getInt("course_fees");
+					courseFees = rs.getInt("course_fees");
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new DbException(ErrorConstant.INVALID_SELECT);
+			throw new DbException("Unable to Find Course Fees",e);
 		}
-		return a;
+		return courseFees;
 	}
 }
