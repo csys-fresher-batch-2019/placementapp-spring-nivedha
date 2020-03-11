@@ -17,16 +17,26 @@ body {
 }
 </style>
 <body>
-<%
-String errorMessage = request.getParameter("errorMessage");
-if (errorMessage != null) {
-out.println("<middle><font color='white' size='5'>" + errorMessage + "</font></middle>");
-}
-%>
 <pre>
 <br></br>
 <h1 style="color:white; font-size:30px; font-family:courier; text-align:centre;">                                   LOGIN</h1>
 </pre>
+<center>
+<%
+String errorMessage = request.getParameter("errorMessage");
+if (errorMessage != null) {
+out.println("<middle><font color='red' size='4'>" + errorMessage + "</font></middle>");
+}
+%>
+</center>
+<%String errorMessage1 = (String)request.getAttribute("errorMessage");
+if(errorMessage1 !=null)
+{%>
+<pre>
+<font color="red"style="font: bold"><center><%=errorMessage1%></center>
+<%}%>
+</pre>
+<br/>
 <form action="LoginServ" autocomplete="off">
 <div style="text-align:center">
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Email Id  <input type="text" name="name"/>

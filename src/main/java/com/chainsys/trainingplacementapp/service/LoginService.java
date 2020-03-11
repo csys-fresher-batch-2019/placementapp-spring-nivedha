@@ -20,8 +20,8 @@ public class LoginService {
 	public String loginDetails(String userName, String userPassword) throws ServiceException {
 		String a = null;
 		try {
-			Validator.validateLogin(r);
-			a=loginDAO.findByEmailAndPassword(userName, userPassword);
+			Validator.validateLogin(userName,userPassword);
+			a=loginDAO.findByEmailAndPassword(userName,userPassword);
 		} catch (DbException e) {
 			throw new ServiceException(e);
 		} catch (ValidatorException e) {

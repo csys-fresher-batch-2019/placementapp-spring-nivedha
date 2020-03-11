@@ -34,11 +34,11 @@ public class Validator {
 		}
 	}
 
-	public static void validateLogin(Registration r) throws ValidatorException {
-		if (r.getMailId() == null || "".equals(r.getMailId().trim())) {
+	public static void validateLogin(String emailId,String password) throws ValidatorException {
+		if (emailId == null || "".equals(emailId.trim())) {
 			throw new ValidatorException("Mail-id cannot be blank/empty");
 		}
-		if (r.getUserPassword() == null || "".equals(r.getUserPassword().trim())) {
+		if (password == null || "".equals(password.trim())) {
 			throw new ValidatorException("Password cannot be blank/empty");
 		}
 	}
