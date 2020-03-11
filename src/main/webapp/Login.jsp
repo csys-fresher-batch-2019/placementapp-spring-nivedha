@@ -27,7 +27,7 @@ out.println("<middle><font color='white' size='5'>" + errorMessage + "</font></m
 <br></br>
 <h1 style="color:white; font-size:30px; font-family:courier; text-align:centre;">                                   LOGIN</h1>
 </pre>
-<form action="LoginServ">
+<form action="LoginServ" autocomplete="off">
 <div style="text-align:center">
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Email Id  <input type="text" name="name"/>
 <br/><br/>

@@ -16,7 +16,7 @@ body {
 }
 </style>
 <body>
-<form action="ChangeGradeServ">
+<form action="ChangeGradeServ" autocomplete="off">
 <pre>
 <br></br>
 <h1 style="color:white; font-size:30px; font-family:courier; text-align:centre;">                            UPDATE INTERVIEW MARKS</h1>
