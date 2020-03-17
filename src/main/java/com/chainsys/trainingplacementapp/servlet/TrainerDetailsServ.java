@@ -11,24 +11,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.TrainerDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chainsys.trainingplacementapp.domain.Trainer;
-import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
+import com.chainsys.trainingplacementapp.service.TrainerService;
 
 @WebServlet("/TrainerDetailsServ")
 
 public class TrainerDetailsServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+@Autowired
+TrainerService trainerService;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		List<Trainer> list = new ArrayList<Trainer>();
-		TrainerDAO impl1 = DAOFactory.getTrainerDAO();
+		//TrainerDAO impl1 = DAOFactory.getTrainerDAO();
 		try {
-			list = impl1.findAll();
-		} catch (DbException e) {
+			list = trainerService.findTrainerDetails();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("Trainer_Details", list);

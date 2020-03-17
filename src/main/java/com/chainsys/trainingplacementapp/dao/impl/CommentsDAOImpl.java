@@ -3,6 +3,7 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,9 @@ public class CommentsDAOImpl implements CommentsDAO {
 			pst.setInt(4, c.getInstitutionRating());
 			pst.setInt(5, c.getTrainerRating());
 			int row = pst.executeUpdate();
+			logger.info("" + row);
 			logger.info("***Comments Added successfully***");
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Comments", e);
 		}
 	}
@@ -35,14 +37,14 @@ public class CommentsDAOImpl implements CommentsDAO {
 	public String findUserNameByUserCourseId(int userCourseId) throws DbException {
 		String sql = "select user_name from registration where user_id=(select user_id from usercourse where user_course_id=?)";
 		String userName = null;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setInt(1, userCourseId);
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, userCourseId);
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
 					userName = rs.getString("user_name");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find UserName", e);
 		}
 		return userName;
@@ -51,14 +53,14 @@ public class CommentsDAOImpl implements CommentsDAO {
 	public String findCourseNameByUserCourseId(int userCourseId) throws DbException {
 		String sql = "select course_name from course where course_id=(select course_id from usercourse where user_course_id=?)";
 		String courseName = null;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setInt(1, userCourseId);
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, userCourseId);
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
 					courseName = rs.getString("course_name");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Name", e);
 		}
 		return courseName;
@@ -67,14 +69,14 @@ public class CommentsDAOImpl implements CommentsDAO {
 	public String findTrainerNameById(int trainerId) throws DbException {
 		String sql = "select trainer_name from trainer where trainer_id=?";
 		String TrainerName = null;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setInt(1, trainerId);
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, trainerId);
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
 					TrainerName = rs.getString("trainer_name");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Trainer Name", e);
 		}
 		return TrainerName;

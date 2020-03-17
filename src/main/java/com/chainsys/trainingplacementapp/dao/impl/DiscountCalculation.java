@@ -3,12 +3,12 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.exception.ErrorConstant;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 
 public class DiscountCalculation {
@@ -28,7 +28,7 @@ public class DiscountCalculation {
 					count = rs.getInt("count(user_id)");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to count UserCourse Details",e);
 		}
 		return count;
@@ -48,7 +48,7 @@ public class DiscountCalculation {
 					courseFees = rs.getInt("course_fees");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Fees",e);
 		}
 		return courseFees;

@@ -3,17 +3,19 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.TrainerDAO;
 import com.chainsys.trainingplacementapp.domain.Trainer;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class TrainerDAOImpl implements TrainerDAO {
 	private static final Logger logger = LoggerFactory.getLogger(TrainerDAOImpl.class);
 
@@ -28,8 +30,9 @@ public class TrainerDAOImpl implements TrainerDAO {
 			pst.setString(5, trainer.getEmailId());
 			pst.setLong(6, trainer.getContactNumber());
 			int row = pst.executeUpdate();
+			logger.info("" + row);
 			logger.info("***Added Trainer Details successfully***");
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Trainer Details", e);
 		}
 	}
@@ -39,21 +42,21 @@ public class TrainerDAOImpl implements TrainerDAO {
 		List<Trainer> list = new ArrayList<Trainer>();
 		String sql = "select trainer_id,trainer_name,trainer_qualfication,trainer_specialist,trainer_experience,email_id,contact_number from trainer";
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Trainer tr = new Trainer();
-					tr.setTrainerId(rs.getInt("trainer_id"));
-					tr.setTrainerName(rs.getString("trainer_name"));
-					tr.setTrainerQualification(rs.getString("trainer_qualfication"));
-					tr.setTrainerSpecialist(rs.getString("trainer_specialist"));
-					tr.setTrainerExperience(rs.getInt("trainer_experience"));
-					tr.setEmailId(rs.getString("email_id"));
-					tr.setContactNumber(rs.getLong("contact_number"));
-					list.add(tr);
+					Trainer trainer = new Trainer();
+					trainer.setTrainerId(rs.getInt("trainer_id"));
+					trainer.setTrainerName(rs.getString("trainer_name"));
+					trainer.setTrainerQualification(rs.getString("trainer_qualfication"));
+					trainer.setTrainerSpecialist(rs.getString("trainer_specialist"));
+					trainer.setTrainerExperience(rs.getInt("trainer_experience"));
+					trainer.setEmailId(rs.getString("email_id"));
+					trainer.setContactNumber(rs.getLong("contact_number"));
+					list.add(trainer);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Trainer Details", e);
 		}
 		return list;

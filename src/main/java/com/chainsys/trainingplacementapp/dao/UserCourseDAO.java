@@ -6,9 +6,10 @@ import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface UserCourseDAO {
-	void save(UserCourse list) throws DbException;
+	
+	void save(UserCourse userCourse) throws DbException;
 
-	int findCourseDurationByCourseId(int Duration) throws DbException;
+	int findCourseDurationByCourseId(int courseId) throws DbException;
 
 	List<UserCourse> findAllByUserId(int userId) throws DbException;
 }

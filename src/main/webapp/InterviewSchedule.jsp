@@ -22,7 +22,13 @@ body {
 <%
 InterviewScheduleDAOImpl impl=new InterviewScheduleDAOImpl();
 List<InterviewSchedule> list=(List <InterviewSchedule>)request.getAttribute("interview_schedule");
+Integer noOfCourses = (Integer)request.getAttribute("NO_OF_COURSES_ENROLLED");
+
 %>
+<% if ( noOfCourses == 0) { %>
+<font color="red">Note: You should complete minimum course to be eligible to attend interview.
+</font>
+<%} %>
 <table border="1">
 <thead>
 <tr>
@@ -35,8 +41,10 @@ List<InterviewSchedule> list=(List <InterviewSchedule>)request.getAttribute("int
 </tr>
 </thead>
 
-<% for(InterviewSchedule i:list)
-{%>
+<% 
+for(InterviewSchedule i:list)
+{		
+%>
 <tr>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getClientId()%></h1></td>
@@ -44,9 +52,10 @@ List<InterviewSchedule> list=(List <InterviewSchedule>)request.getAttribute("int
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getJobRequirement()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewDate()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewTime()%></h1></td>
-<td><a href="AttendInterviewServ?Client_id=<%=i.getClientId()%>">
+<td> <% if ( noOfCourses > 0) { %>
+<a href="AttendInterviewServ?Client_id=<%=i.getClientId()%>" >
 <h1 style="color:red; font-size:20px; font-family:courier; text-align:centre;">ATTEND</a>
-
+<%} %>
 </td>
 </tr>
 <%} %>

@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chainsys.trainingplacementapp.dao.RegistrationDAO;
 import com.chainsys.trainingplacementapp.domain.Registration;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
 import com.chainsys.trainingplacementapp.service.RegistrationService;
 import com.chainsys.trainingplacementapp.util.Logger;
 
@@ -45,9 +43,8 @@ public class RegistrationServ extends HttpServlet {
 		reg1.setGender(request.getParameter("gender"));
 		list.add(reg1);
 		boolean status = false;
-		RegistrationDAO dao = DAOFactory.getRegistrationDAO();
 		try {
-			List<Registration> list1 = dao.findAll();
+			List<Registration> list1 = registrationService.FindRegistration();
 			for (Registration r : list1) {
 				long m = r.getMobileNo();
 				String mail = r.getMailId();

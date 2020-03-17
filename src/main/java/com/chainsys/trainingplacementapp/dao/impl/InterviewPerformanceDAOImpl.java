@@ -3,17 +3,19 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(InterviewPerformanceDAOImpl.class);
@@ -28,7 +30,7 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Interview Performance Details", e);
 		}
 	}
@@ -40,19 +42,19 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 		logger.info("***Display Interview Performance Details***");
 		logger.info("");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					InterviewPerformance ip = new InterviewPerformance();
-					ip.setPerformId(rs.getInt("sl_no"));
-					ip.setClientId(rs.getInt("client_id"));
-					ip.setUserId(rs.getInt("user_id"));
-					ip.setMarks(rs.getInt("marks"));
-					ip.setInterStatus(rs.getString("inter_status"));
-					list.add(ip);
+					InterviewPerformance interviewPerformance = new InterviewPerformance();
+					interviewPerformance.setPerformId(rs.getInt("sl_no"));
+					interviewPerformance.setClientId(rs.getInt("client_id"));
+					interviewPerformance.setUserId(rs.getInt("user_id"));
+					interviewPerformance.setMarks(rs.getInt("marks"));
+					interviewPerformance.setInterviewStatus(rs.getString("inter_status"));
+					list.add(interviewPerformance);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Interview Performance Details", e);
 		}
 		return list;
@@ -66,7 +68,8 @@ public class InterviewPerformanceDAOImpl implements InterviewPerformanceDAO {
 			pst.setInt(1, marks);
 			pst.setInt(2, performId);
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Interview Marks", e);
 		}
 	}

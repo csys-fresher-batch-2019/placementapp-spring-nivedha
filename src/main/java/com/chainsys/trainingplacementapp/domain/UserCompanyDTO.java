@@ -17,7 +17,7 @@ public class UserCompanyDTO {
 	private String contactPerson;
 	private String emailId;
 	private int marks;
-	private String interStatus;
+	private String interviewStatus;
 
 	public int getUserId() {
 		return userId;
@@ -139,12 +139,13 @@ public class UserCompanyDTO {
 		this.marks = marks;
 	}
 
-	public String getInterStatus() {
-		return interStatus;
+	
+	public String getInterviewStatus() {
+		return interviewStatus;
 	}
 
-	public void setInterStatus(String interStatus) {
-		this.interStatus = interStatus;
+	public void setInterviewStatus(String interviewStatus) {
+		this.interviewStatus = interviewStatus;
 	}
 
 	@Override
@@ -154,7 +155,7 @@ public class UserCompanyDTO {
 				+ "\n userCity: " + userCity + "\n gender: " + gender + "\n\n CLIENT DETAILS:\n clientId: " + clientId
 				+ "\n companyName: " + companyName + "\n companyType: " + companyType + "\n companyAddress: "
 				+ companyAddress + "\n phoneNo: " + phoneNo + "\n contactPerson: " + contactPerson + "\n emailId: "
-				+ emailId + "\n marks: " + marks + "\n interStatus: " + interStatus
+				+ emailId + "\n marks: " + marks + "\n interviewStatus: " + interviewStatus
 				+ "\n *************************************\n";
 	}
 

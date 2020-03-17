@@ -5,7 +5,7 @@ public class InterviewPerformance {
 	private int performId;
 	private int clientId;
 	private int userId;
-	private String interStatus;
+	private String interviewStatus;
 	private int marks;
 
 	public int getPerformId() {
@@ -32,13 +32,14 @@ public class InterviewPerformance {
 		this.userId = userId;
 	}
 
-	public String getInterStatus() {
-		return interStatus;
+	public String getInterviewStatus() {
+		return interviewStatus;
 	}
 
-	public void setInterStatus(String interStatus) {
-		this.interStatus = interStatus;
+	public void setInterviewStatus(String interviewStatus) {
+		this.interviewStatus = interviewStatus;
 	}
+
 
 	public int getMarks() {
 		return marks;
@@ -51,7 +52,7 @@ public class InterviewPerformance {
 	@Override
 	public String toString() {
 		return "InterviewPerformance [performId=" + performId + ", clientId=" + clientId + ", userId=" + userId
-				+ ", interStatus=" + interStatus + ", marks=" + marks + "]";
+				+ ", interStatus=" + interviewStatus + ", marks=" + marks + "]";
 	}
 
 }

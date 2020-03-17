@@ -12,10 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chainsys.trainingplacementapp.dao.LoginDAO;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
 import com.chainsys.trainingplacementapp.service.LoginService;
-import com.chainsys.trainingplacementapp.util.Logger;
 
 @WebServlet("/LoginServ")
 
@@ -24,7 +21,6 @@ public class LoginServ extends HttpServlet {
 
 	@Autowired
 	private LoginService loginService;
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -36,7 +32,15 @@ public class LoginServ extends HttpServlet {
 			String a = loginService.loginDetails(userName, userPassword);
 			if (a != null) {
 				sess.setAttribute("userid", a);
-				response.sendRedirect("HomeCourse.jsp");
+				
+				String gotoPage = request.getParameter("gotoPage");
+				System.out.println("GotoPAge=" + gotoPage);
+				if ( gotoPage!=null && !"".equals(gotoPage.trim()) ) {
+					response.sendRedirect(gotoPage);
+				}
+				else{
+					response.sendRedirect("Index.jsp");
+				}
 			} else
 				response.sendRedirect("Login.jsp?errorMessage=Invalid Login");
 

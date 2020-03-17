@@ -11,27 +11,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.chainsys.trainingplacementapp.dao.JoinDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chainsys.trainingplacementapp.domain.UserCompanyDTO;
-import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
+import com.chainsys.trainingplacementapp.service.ClientCompanyService;
 
 @WebServlet("/SearchByStatusServ")
 
 public class SearchByStatusServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Autowired
+	ClientCompanyService clientCompanyService;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		JoinDAO impl = DAOFactory.getJoinDAO();
+		//JoinDAO impl = DAOFactory.getJoinDAO();
 		List<UserCompanyDTO> list = new ArrayList<UserCompanyDTO>();
 		UserCompanyDTO c = new UserCompanyDTO();
-		c.setInterStatus(request.getParameter("status"));
+		c.setInterviewStatus(request.getParameter("status"));
 		list.add(c);
 		try {
-			list = impl.findUsersByInterviewStatus(c);
-		} catch (DbException e) {
+			list = clientCompanyService.findUserInterviewStatus(c);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("view_status", list);

@@ -3,17 +3,19 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.GradeDAO;
 import com.chainsys.trainingplacementapp.domain.Grade;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class GradeDAOImpl implements GradeDAO {
 	private static final Logger logger = LoggerFactory.getLogger(GradeDAOImpl.class);
 
@@ -22,7 +24,8 @@ public class GradeDAOImpl implements GradeDAO {
 		String sql = "update intervieww set inter_status=(select g.status from grade g where marks between g.min_marks and g.max_marks)";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Interview Status", e);
 		}
 	}
@@ -31,17 +34,17 @@ public class GradeDAOImpl implements GradeDAO {
 	public List<Grade> findAll() throws DbException {
 		List<Grade> list = new ArrayList<Grade>();
 		String sql = "select min_marks,max_marks,status from grade";
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Grade g = new Grade();
-					g.setMinMarks(rs.getInt("min_marks"));
-					g.setMaxMarks(rs.getInt("max_marks"));
-					g.setStatus(rs.getString("status"));
-					list.add(g);
+					Grade grade = new Grade();
+					grade.setMinMarks(rs.getInt("min_marks"));
+					grade.setMaxMarks(rs.getInt("max_marks"));
+					grade.setStatus(rs.getString("status"));
+					list.add(grade);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Grade Details", e);
 		}
 		return list;
@@ -55,7 +58,8 @@ public class GradeDAOImpl implements GradeDAO {
 			pst.setInt(2, maxMarks);
 			pst.setString(3, status);
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Marks", e);
 		}
 	}

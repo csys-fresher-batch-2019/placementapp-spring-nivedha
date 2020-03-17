@@ -11,29 +11,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chainsys.trainingplacementapp.dao.impl.DiscountCalculation;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
+import com.chainsys.trainingplacementapp.service.UserCourseService;
 
 @WebServlet("/CourseJoinServ")
 
 public class CourseJoinServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Autowired
+	UserCourseService userCourseService;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		int userId;
 		int courseId;
+		String fromPage = "CourseJoinServ";
 		HttpSession sess = request.getSession(false);
 		HttpSession sess1 = request.getSession();
 		UserCourse uc1 = new UserCourse();
 		String userIdStr = (String) sess.getAttribute("userid");
 		if (userIdStr == null) {
-			response.sendRedirect("Login.jsp");
+			response.sendRedirect("Login.jsp?gotoPage=" + fromPage);
 		} else {
 			userId = Integer.parseInt((String) sess.getAttribute("userid"));
 			courseId = (Integer) sess.getAttribute("courseid");
@@ -43,12 +48,12 @@ public class CourseJoinServ extends HttpServlet {
 			uc1.setCourseId(courseId);
 			uc1.setStartDate(currentDate);
 			list2.add(uc1);
-			UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
+			// UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
 			for (UserCourse userCourse : list2) {
 				int duration = 0;
 				try {
-					duration = impl1.findCourseDurationByCourseId(courseId);
-				} catch (DbException e) {
+					duration = userCourseService.findDurationByCourseId(courseId);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				LocalDate completionDate = currentDate.plusMonths(duration);
@@ -57,11 +62,13 @@ public class CourseJoinServ extends HttpServlet {
 					Double tot = discount(userId, courseId);
 					userCourse.setTotalAmount(tot);
 					sess1.setAttribute("userCourse", userCourse);
+					response.sendRedirect("CourseJoin.jsp");
 				} catch (DbException e) {
+					response.sendRedirect("CourseJoinServ");
 					e.printStackTrace();
+					
 				}
 			}
-			response.sendRedirect("CourseJoin.jsp");
 		}
 	}
 

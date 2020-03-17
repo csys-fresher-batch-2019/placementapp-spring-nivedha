@@ -3,30 +3,30 @@ package com.chainsys.trainingplacementapp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chainsys.trainingplacementapp.dao.LoginDAO;
+import com.chainsys.trainingplacementapp.dao.AdminLoginDAO;
+import com.chainsys.trainingplacementapp.domain.AdminLogin;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.exception.ServiceException;
 import com.chainsys.trainingplacementapp.exception.ValidatorException;
 import com.chainsys.trainingplacementapp.validator.Validator;
 
 @Service
-public class LoginService {
-
+public class AdminLoginService {
 	@Autowired
-	Validator validator;
-	@Autowired
-	LoginDAO loginDAO;
+	AdminLoginDAO adminLoginDAO;
 
-	public String loginDetails(String userName, String userPassword) throws ServiceException {
-		String a = null;
+	public String AdminLoginDetails(AdminLogin adminLogin) throws ServiceException {
+		String admin = null;
 		try {
-			Validator.validateLogin(userName, userPassword);
-			a = loginDAO.findByEmailAndPassword(userName, userPassword);
+			try {
+				Validator.validateAdminLogin(adminLogin);
+				admin = adminLoginDAO.findByAdminEmailAndPassword(adminLogin);
+			} catch (ValidatorException e) {
+				throw new ServiceException(e.getMessage(), e);
+			}
 		} catch (DbException e) {
 			throw new ServiceException(e);
-		} catch (ValidatorException e) {
-			throw new ServiceException(e.getMessage(), e);
 		}
-		return a;
+		return admin;
 	}
 }

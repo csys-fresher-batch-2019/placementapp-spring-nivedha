@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.JoinDAO;
 import com.chainsys.trainingplacementapp.domain.CompanyScheduleDTO;
@@ -18,42 +20,40 @@ import com.chainsys.trainingplacementapp.domain.UserCompanyDTO;
 import com.chainsys.trainingplacementapp.domain.UserCourseDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class JoinDAOImpl implements JoinDAO {
 	private static final Logger logger = LoggerFactory.getLogger(JoinDAOImpl.class);
 
 	public List<UserCourseDTO> findAllByCourseIdAndUserId(UserCourseDTO usercourseDTO) throws DbException {
 		List<UserCourseDTO> list = new ArrayList<UserCourseDTO>();
 		String sql = "select uc.user_id,c.course_id,c.course_name,c.course_fees,c.course_duration,uc.start_date,uc.completion_date,uc.total_amount from course c,usercourse uc where c.course_id=uc.course_id and uc.user_id=?";
-		logger.info("");
 		logger.info("***Display All UserCourse Details***");
-		logger.info("");
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			stmt.setInt(1, usercourseDTO.getUserId());
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
-					UserCourseDTO c = new UserCourseDTO();
-					c.setUserId(rs.getInt("user_id"));
-					c.setCourseId(rs.getInt("course_id"));
-					c.setCourseName(rs.getString("course_name"));
-					c.setCourseFees(rs.getInt("course_fees"));
-					c.setCourseDuration(rs.getInt("course_duration"));
+					UserCourseDTO userCourseDTO = new UserCourseDTO();
+					userCourseDTO.setUserId(rs.getInt("user_id"));
+					userCourseDTO.setCourseId(rs.getInt("course_id"));
+					userCourseDTO.setCourseName(rs.getString("course_name"));
+					userCourseDTO.setCourseFees(rs.getInt("course_fees"));
+					userCourseDTO.setCourseDuration(rs.getInt("course_duration"));
 					Date d = rs.getDate("start_date");
 					if (d != null) {
 						LocalDate ld = d.toLocalDate();
-						c.setStartDate(ld);
+						userCourseDTO.setStartDate(ld);
 					}
 					Date da = rs.getDate("completion_date");
 					if (da != null) {
 						LocalDate ldd = da.toLocalDate();
-						c.setCompletionDate(ldd);
+						userCourseDTO.setCompletionDate(ldd);
 					}
-					c.setTotalAmount(rs.getInt("total_amount"));
-					list.add(c);
+					userCourseDTO.setTotalAmount(rs.getInt("total_amount"));
+					list.add(userCourseDTO);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Course Details", e);
 		}
 		return list;
@@ -63,29 +63,29 @@ public class JoinDAOImpl implements JoinDAO {
 		List<UserCompanyDTO> list = new ArrayList<UserCompanyDTO>();
 		String sql = "select r.user_id,r.user_name,r.qualification,r.mail_id,r.mobile_no,r.gender,c.client_id,c.company_name,c.company_type,c.company_address,c.ph_no,c.contact_person,c.email_id,i.inter_status,i.marks from registration r,clientcmpy c,intervieww i where i.client_id = c.client_id and r.user_id=i.user_id and i.inter_status=?";
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setString(1, userCompanyDTO.getInterStatus());
+			pst.setString(1, userCompanyDTO.getInterviewStatus());
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					UserCompanyDTO jc = new UserCompanyDTO();
-					jc.setUserId(rs.getInt("user_id"));
-					jc.setUserName(rs.getString("user_name"));
-					jc.setQualification(rs.getString("qualification"));
-					jc.setMailId(rs.getString("mail_id"));
-					jc.setMobileNo(rs.getLong("mobile_no"));
-					jc.setGender(rs.getString("gender"));
-					jc.setClientId(rs.getInt("client_id"));
-					jc.setCompanyName(rs.getString("company_name"));
-					jc.setCompanyType(rs.getString("company_type"));
-					jc.setCompanyAddress(rs.getString("company_address"));
-					jc.setPhoneNo(rs.getLong("ph_no"));
-					jc.setContactPerson(rs.getString("contact_person"));
-					jc.setEmailId(rs.getString("email_id"));
-					jc.setInterStatus(rs.getString("inter_status"));
-					jc.setMarks(rs.getInt("marks"));
-					list.add(jc);
+					UserCompanyDTO userCompany = new UserCompanyDTO();
+					userCompany.setUserId(rs.getInt("user_id"));
+					userCompany.setUserName(rs.getString("user_name"));
+					userCompany.setQualification(rs.getString("qualification"));
+					userCompany.setMailId(rs.getString("mail_id"));
+					userCompany.setMobileNo(rs.getLong("mobile_no"));
+					userCompany.setGender(rs.getString("gender"));
+					userCompany.setClientId(rs.getInt("client_id"));
+					userCompany.setCompanyName(rs.getString("company_name"));
+					userCompany.setCompanyType(rs.getString("company_type"));
+					userCompany.setCompanyAddress(rs.getString("company_address"));
+					userCompany.setPhoneNo(rs.getLong("ph_no"));
+					userCompany.setContactPerson(rs.getString("contact_person"));
+					userCompany.setEmailId(rs.getString("email_id"));
+					userCompany.setInterviewStatus(rs.getString("inter_status"));
+					userCompany.setMarks(rs.getInt("marks"));
+					list.add(userCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Company Details", e);
 		}
 		return list;
@@ -98,26 +98,26 @@ public class JoinDAOImpl implements JoinDAO {
 			pst.setInt(1, userCompanyDTO.getMarks());
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					UserCompanyDTO jc = new UserCompanyDTO();
-					jc.setUserId(rs.getInt("user_id"));
-					jc.setUserName(rs.getString("user_name"));
-					jc.setQualification(rs.getString("qualification"));
-					jc.setMailId(rs.getString("mail_id"));
-					jc.setMobileNo(rs.getLong("mobile_no"));
-					jc.setGender(rs.getString("gender"));
-					jc.setClientId(rs.getInt("client_id"));
-					jc.setCompanyName(rs.getString("company_name"));
-					jc.setCompanyType(rs.getString("company_type"));
-					jc.setCompanyAddress(rs.getString("company_address"));
-					jc.setPhoneNo(rs.getLong("ph_no"));
-					jc.setContactPerson(rs.getString("contact_person"));
-					jc.setEmailId(rs.getString("email_id"));
-					jc.setInterStatus(rs.getString("inter_status"));
-					jc.setMarks(rs.getInt("marks"));
-					list.add(jc);
+					UserCompanyDTO userCompany = new UserCompanyDTO();
+					userCompany.setUserId(rs.getInt("user_id"));
+					userCompany.setUserName(rs.getString("user_name"));
+					userCompany.setQualification(rs.getString("qualification"));
+					userCompany.setMailId(rs.getString("mail_id"));
+					userCompany.setMobileNo(rs.getLong("mobile_no"));
+					userCompany.setGender(rs.getString("gender"));
+					userCompany.setClientId(rs.getInt("client_id"));
+					userCompany.setCompanyName(rs.getString("company_name"));
+					userCompany.setCompanyType(rs.getString("company_type"));
+					userCompany.setCompanyAddress(rs.getString("company_address"));
+					userCompany.setPhoneNo(rs.getLong("ph_no"));
+					userCompany.setContactPerson(rs.getString("contact_person"));
+					userCompany.setEmailId(rs.getString("email_id"));
+					userCompany.setInterviewStatus(rs.getString("inter_status"));
+					userCompany.setMarks(rs.getInt("marks"));
+					list.add(userCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Interview Status Details", e);
 		}
 		return list;
@@ -133,25 +133,25 @@ public class JoinDAOImpl implements JoinDAO {
 			pst.setDate(1, Date.valueOf(interviewDate));
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					CompanyScheduleDTO jc = new CompanyScheduleDTO();
-					jc.setCompanyName(rs.getString("company_name"));
-					jc.setCompanyType(rs.getString("company_type"));
-					jc.setCompanyAddress(rs.getString("company_address"));
-					jc.setPhoneNo(rs.getLong("ph_no"));
-					jc.setContactPerson(rs.getString("contact_person"));
-					jc.setEmailId(rs.getString("email_id"));
-					jc.setJobTitle(rs.getString("job_title"));
-					jc.setJobRequirement(rs.getString("job_requirement"));
+					CompanyScheduleDTO userCompany = new CompanyScheduleDTO();
+					userCompany.setCompanyName(rs.getString("company_name"));
+					userCompany.setCompanyType(rs.getString("company_type"));
+					userCompany.setCompanyAddress(rs.getString("company_address"));
+					userCompany.setPhoneNo(rs.getLong("ph_no"));
+					userCompany.setContactPerson(rs.getString("contact_person"));
+					userCompany.setEmailId(rs.getString("email_id"));
+					userCompany.setJobTitle(rs.getString("job_title"));
+					userCompany.setJobRequirement(rs.getString("job_requirement"));
 					Date id = rs.getDate("interview_date");
 					if (id != null) {
 						LocalDate l = id.toLocalDate();
-						jc.setInterviewDate(l);
+						userCompany.setInterviewDate(l);
 					}
-					jc.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
-					list.add(jc);
+					userCompany.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
+					list.add(userCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Company Interview Schedule Details", e);
 		}
 		return list;
@@ -168,25 +168,25 @@ public class JoinDAOImpl implements JoinDAO {
 			pst.setString(2, companyScheduleDTO.getJobTitle());
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					CompanyScheduleDTO i = new CompanyScheduleDTO();
-					i.setCompanyName(rs.getString("company_name"));
-					i.setCompanyType(rs.getString("company_type"));
-					i.setCompanyAddress(rs.getString("company_address"));
-					i.setPhoneNo(rs.getLong("ph_no"));
-					i.setContactPerson(rs.getString("contact_person"));
-					i.setEmailId(rs.getString("email_id"));
-					i.setJobTitle(rs.getString("job_title"));
-					i.setJobRequirement(rs.getString("job_requirement"));
+					CompanyScheduleDTO companySchedule = new CompanyScheduleDTO();
+					companySchedule.setCompanyName(rs.getString("company_name"));
+					companySchedule.setCompanyType(rs.getString("company_type"));
+					companySchedule.setCompanyAddress(rs.getString("company_address"));
+					companySchedule.setPhoneNo(rs.getLong("ph_no"));
+					companySchedule.setContactPerson(rs.getString("contact_person"));
+					companySchedule.setEmailId(rs.getString("email_id"));
+					companySchedule.setJobTitle(rs.getString("job_title"));
+					companySchedule.setJobRequirement(rs.getString("job_requirement"));
 					Date id = rs.getDate("interview_date");
 					if (id != null) {
 						LocalDate l = id.toLocalDate();
-						i.setInterviewDate(l);
+						companySchedule.setInterviewDate(l);
 					}
-					i.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
-					list.add(i);
+					companySchedule.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
+					list.add(companySchedule);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Job Requirement Details", e);
 		}
 		return list;
@@ -199,17 +199,17 @@ public class JoinDAOImpl implements JoinDAO {
 			pst.setInt(1, userCompanyDTO.getUserId());
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					UserCompanyDTO jc = new UserCompanyDTO();
-					jc.setUserId(rs.getInt("user_id"));
-					jc.setUserName(rs.getString("user_name"));
-					jc.setClientId(rs.getInt("client_id"));
-					jc.setCompanyName(rs.getString("company_name"));
-					jc.setMarks(rs.getInt("marks"));
-					jc.setInterStatus(rs.getString("inter_status"));
-					list.add(jc);
+					UserCompanyDTO userCompany = new UserCompanyDTO();
+					userCompany.setUserId(rs.getInt("user_id"));
+					userCompany.setUserName(rs.getString("user_name"));
+					userCompany.setClientId(rs.getInt("client_id"));
+					userCompany.setCompanyName(rs.getString("company_name"));
+					userCompany.setMarks(rs.getInt("marks"));
+					userCompany.setInterviewStatus(rs.getString("inter_status"));
+					list.add(userCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Interview Status Details", e);
 		}
 		return list;

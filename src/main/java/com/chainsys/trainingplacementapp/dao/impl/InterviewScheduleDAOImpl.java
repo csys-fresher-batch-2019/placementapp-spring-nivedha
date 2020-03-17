@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,13 +12,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.InterviewScheduleDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.domain.InterviewSchedule;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 	private static final Logger logger = LoggerFactory.getLogger(InterviewScheduleDAOImpl.class);
 
@@ -34,7 +36,8 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 			pst.setDate(5, Date.valueOf(schedule.getInterviewDate()));
 			pst.setString(6, schedule.getInterviewTime().toString());
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Interview Schedule Details", e);
 		}
 	}
@@ -46,29 +49,27 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 		logger.info("");
 		logger.info("***Display Interview Schedule Details***");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					InterviewSchedule in = new InterviewSchedule();
-					in.setInterviewId(rs.getInt("interview_id"));
-					in.setClientId(rs.getInt("client_id"));
-					in.setJobTitle(rs.getString("job_title"));
-					in.setJobRequirement(rs.getString("job_requirement"));
-					Date d = rs.getDate("created_date");
+					InterviewSchedule interviewSchedule = new InterviewSchedule();
+					interviewSchedule.setInterviewId(rs.getInt("interview_id"));
+					interviewSchedule.setClientId(rs.getInt("client_id"));
+					interviewSchedule.setJobTitle(rs.getString("job_title"));
+					interviewSchedule.setJobRequirement(rs.getString("job_requirement"));
+					LocalDate d = rs.getDate("created_date").toLocalDate();
 					if (d != null) {
-						LocalDate ld = d.toLocalDate();
-						in.setCreatedDate(ld);
+						interviewSchedule.setCreatedDate(d);
 					}
-					Date id = rs.getDate("interview_date");
+					LocalDate id = rs.getDate("interview_date").toLocalDate();
 					if (id != null) {
-						LocalDate l = id.toLocalDate();
-						in.setInterviewDate(l);
+						interviewSchedule.setInterviewDate(id);
 					}
-					in.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
-					list.add(in);
+					interviewSchedule.setInterviewTime(LocalTime.parse(rs.getString("interview_time")));
+					list.add(interviewSchedule);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Interview Schedule Details", e);
 		}
 		return list;
@@ -84,7 +85,7 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 			pst.setInt(1, interviewId);
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Delete Interview Schedule Details", e);
 		}
 	}
@@ -100,18 +101,18 @@ public class InterviewScheduleDAOImpl implements InterviewScheduleDAO {
 			pst.setString(1, jobRequirement);
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					ClientCompany cc = new ClientCompany();
-					cc.setClientId(rs.getInt("client_id"));
-					cc.setCompanyName(rs.getString("company_name"));
-					cc.setCompanyType(rs.getString("company_type"));
-					cc.setCompanyAddress(rs.getString("company_address"));
-					cc.setPhoneNo(rs.getLong("ph_no"));
-					cc.setContactPerson(rs.getString("contact_person"));
-					cc.setEmailId(rs.getString("email_id"));
-					list1.add(cc);
+					ClientCompany clientCompany = new ClientCompany();
+					clientCompany.setClientId(rs.getInt("client_id"));
+					clientCompany.setCompanyName(rs.getString("company_name"));
+					clientCompany.setCompanyType(rs.getString("company_type"));
+					clientCompany.setCompanyAddress(rs.getString("company_address"));
+					clientCompany.setPhoneNo(rs.getLong("ph_no"));
+					clientCompany.setContactPerson(rs.getString("contact_person"));
+					clientCompany.setEmailId(rs.getString("email_id"));
+					list1.add(clientCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable Find Company Details", e);
 		}
 		return list1;

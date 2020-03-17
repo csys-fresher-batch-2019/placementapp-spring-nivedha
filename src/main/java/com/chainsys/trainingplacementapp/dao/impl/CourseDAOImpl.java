@@ -3,17 +3,19 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.CourseDAO;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class CourseDAOImpl implements CourseDAO {
 	private static final Logger logger = LoggerFactory.getLogger(CourseDAOImpl.class);
 
@@ -22,21 +24,21 @@ public class CourseDAOImpl implements CourseDAO {
 		List<Course> list = new ArrayList<Course>();
 		String sql = "select course_id,course_name,course_duration,course_fees,course_image,course_pdf from course where course_name=?";
 		logger.info("***Display Course Details By Name***");
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setString(1, courseName);
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setString(1, courseName);
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Course c = new Course();
-					c.setCourseId(rs.getInt("course_id"));
-					c.setCourseName(rs.getString("course_name"));
-					c.setCourseDuration(rs.getInt("course_duration"));
-					c.setCourseFees(rs.getInt("course_fees"));
-					c.setCoursePdf(rs.getString("course_pdf"));
-					c.setCourseImage(rs.getString("course_image"));
-					list.add(c);
+					Course course = new Course();
+					course.setCourseId(rs.getInt("course_id"));
+					course.setCourseName(rs.getString("course_name"));
+					course.setCourseDuration(rs.getInt("course_duration"));
+					course.setCourseFees(rs.getInt("course_fees"));
+					course.setCoursePdf(rs.getString("course_pdf"));
+					course.setCourseImage(rs.getString("course_image"));
+					list.add(course);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Details", e);
 		}
 		return list;
@@ -49,7 +51,8 @@ public class CourseDAOImpl implements CourseDAO {
 			pst.setInt(1, courseFees);
 			pst.setString(2, courseName);
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Course Fees", e);
 		}
 	}
@@ -66,7 +69,7 @@ public class CourseDAOImpl implements CourseDAO {
 					courseFees = rs.getInt("course_fees");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Fees", e);
 		}
 		return courseFees;
@@ -77,17 +80,16 @@ public class CourseDAOImpl implements CourseDAO {
 		List<Course> list = new ArrayList<Course>();
 		String sql = "select course_name from course";
 		logger.info("***Display All Course Names***");
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					Course c = new Course();
-					c.setCourseName(rs.getString("course_name"));
-					list.add(c);
+					Course course = new Course();
+					course.setCourseName(rs.getString("course_name"));
+					list.add(course);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Name", e);
-
 		}
 		return list;
 	}
@@ -99,24 +101,25 @@ public class CourseDAOImpl implements CourseDAO {
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, courseId);
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Delete Course Details", e);
-
 		}
 	}
 
-	public void save(Course cl) throws DbException {
+	public void save(Course course) throws DbException {
 
 		String sql = "insert into course(course_id,course_name,course_duration,course_fees,course_pdf,course_image)values(course_id_seq.nextval,?,?,?,?,?)";
 		logger.info("***Add Course Details***");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setString(1, cl.getCourseName());
-			pst.setInt(2, cl.getCourseDuration());
-			pst.setInt(3, cl.getCourseFees());
-			pst.setString(4, cl.getCoursePdf());
-			pst.setString(5, cl.getCourseImage());
+			pst.setString(1, course.getCourseName());
+			pst.setInt(2, course.getCourseDuration());
+			pst.setInt(3, course.getCourseFees());
+			pst.setString(4, course.getCoursePdf());
+			pst.setString(5, course.getCourseImage());
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Course Details", e);
 		}
 	}
@@ -130,13 +133,13 @@ public class CourseDAOImpl implements CourseDAO {
 			pst.setInt(2, fees2);
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Course c = new Course();
-					c.setCourseName(rs.getString("course_name"));
-					c.setCourseFees(rs.getInt("course_fees"));
-					list.add(c);
+					Course course = new Course();
+					course.setCourseName(rs.getString("course_name"));
+					course.setCourseFees(rs.getInt("course_fees"));
+					list.add(course);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Name and Fees", e);
 		}
 		return list;
@@ -151,13 +154,13 @@ public class CourseDAOImpl implements CourseDAO {
 		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
 			try (ResultSet rs = stmt.executeQuery();) {
 				while (rs.next()) {
-					Course c = new Course();
-					c.setCourseName(rs.getString("course_name"));
-					c.setCourseFees(rs.getInt("course_fees"));
-					list.add(c);
+					Course course = new Course();
+					course.setCourseName(rs.getString("course_name"));
+					course.setCourseFees(rs.getInt("course_fees"));
+					list.add(course);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Minimum Course Fees", e);
 		}
 		return list;

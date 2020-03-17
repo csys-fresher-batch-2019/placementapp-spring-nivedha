@@ -1,7 +1,6 @@
 package com.chainsys.trainingplacementapp.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,15 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chainsys.trainingplacementapp.domain.UserCourse;
-import com.chainsys.trainingplacementapp.exception.DbException;
-import com.chainsys.trainingplacementapp.factory.DAOFactory;
+import com.chainsys.trainingplacementapp.service.UserCourseService;
 
 @WebServlet("/UserCourseServ")
 
 public class UserCourseServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	UserCourseService userCourseService;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -28,16 +30,16 @@ public class UserCourseServ extends HttpServlet {
 		int userId;
 		HttpSession sess = request.getSession(false);
 		userId = Integer.parseInt((String) sess.getAttribute("userid"));
-		UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
-		UserCourse uc1 = new UserCourse();
-		uc1.setUserId(userId);
-		List<UserCourse> list1 = new ArrayList<UserCourse>();
+		// UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
+		List<UserCourse> list = null;
 		try {
-			list1 = impl1.findAllByUserId(uc1.getUserId());
-		} catch (DbException e) {
+			System.out.println(userId);
+			list = userCourseService.findUserCourseById(userId);
+			System.out.println(list);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.setAttribute("user_course", list1);
+		request.setAttribute("user_course", list);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("UserCourse.jsp");
 		dispatcher.forward(request, response);
 	}

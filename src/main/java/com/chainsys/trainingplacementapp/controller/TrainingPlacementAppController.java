@@ -47,8 +47,6 @@ public class TrainingPlacementAppController {
 		 {
 			 msg.setErrorMessage("Registration Failed");
 		 }
-
-		return msg;
-		
+		return msg;		
 }
 }

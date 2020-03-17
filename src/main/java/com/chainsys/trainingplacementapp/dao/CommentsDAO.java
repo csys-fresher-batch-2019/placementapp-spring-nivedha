@@ -5,7 +5,7 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface CommentsDAO {
 
-	void save(Comments c) throws DbException;
+	void save(Comments comments) throws DbException;
 
 	String findUserNameByUserCourseId(int userCourseId) throws DbException;
 
@@ -13,3 +13,4 @@ public interface CommentsDAO {
 
 	String findTrainerNameById(int trainerId) throws DbException;
 }
+

@@ -59,6 +59,6 @@ List<UserCompanyDTO> list=(List<UserCompanyDTO>)request.getAttribute("view_statu
 <%} %>
 </table>
 <br/>
-<a href="Index.jsp"><button type="submit">HOME</button></a>
+<a href="Admin.jsp"><button type="submit">HOME</button></a>
 </body>
 </html>

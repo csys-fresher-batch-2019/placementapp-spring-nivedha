@@ -3,6 +3,7 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,16 @@ public class LoginDAOImpl implements LoginDAO {
 		String sql = "select user_id from registration where mail_id=? and user_password = ?";
 		logger.info("Users : " + sql);
 		String msg = null;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setString(1, emailId);
-			stmt.setString(2, userPassword);
-			try (ResultSet rs = stmt.executeQuery()) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setString(1, emailId);
+			pst.setString(2, userPassword);
+			try (ResultSet rs = pst.executeQuery()) {
 
 				if (rs.next()) {
 					msg = rs.getString("user_id");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Login", e);
 
 		}

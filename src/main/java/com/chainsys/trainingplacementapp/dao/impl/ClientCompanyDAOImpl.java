@@ -3,17 +3,19 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.ClientCompanyDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ClientCompanyDAOImpl.class);
 
@@ -32,7 +34,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setString(6, client.getEmailId());
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add Company Details", e);
 		}
 	}
@@ -43,21 +45,21 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		String sql = "select client_id,company_name,company_type,company_address,ph_no,contact_person,email_id from clientcmpy";
 		logger.info("***Display All Company Details***");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					ClientCompany cc = new ClientCompany();
-					cc.setClientId(rs.getInt("client_id"));
-					cc.setCompanyName(rs.getString("company_name"));
-					cc.setCompanyType(rs.getString("company_type"));
-					cc.setCompanyAddress(rs.getString("company_address"));
-					cc.setPhoneNo(rs.getLong("ph_no"));
-					cc.setContactPerson(rs.getString("contact_person"));
-					cc.setEmailId(rs.getString("email_id"));
-					list1.add(cc);
+					ClientCompany clientCompany = new ClientCompany();
+					clientCompany.setClientId(rs.getInt("client_id"));
+					clientCompany.setCompanyName(rs.getString("company_name"));
+					clientCompany.setCompanyType(rs.getString("company_type"));
+					clientCompany.setCompanyAddress(rs.getString("company_address"));
+					clientCompany.setPhoneNo(rs.getLong("ph_no"));
+					clientCompany.setContactPerson(rs.getString("contact_person"));
+					clientCompany.setEmailId(rs.getString("email_id"));
+					list1.add(clientCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Company Details", e);
 		}
 		return list1;
@@ -73,18 +75,18 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setString(1, "%" + companyName + "%");
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					ClientCompany cc = new ClientCompany();
-					cc.setClientId(rs.getInt("client_id"));
-					cc.setCompanyName(rs.getString("company_name"));
-					cc.setCompanyType(rs.getString("company_type"));
-					cc.setCompanyAddress(rs.getString("company_address"));
-					cc.setPhoneNo(rs.getLong("ph_no"));
-					cc.setContactPerson(rs.getString("contact_person"));
-					cc.setEmailId(rs.getString("email_id"));
-					list1.add(cc);
+					ClientCompany clientCompany = new ClientCompany();
+					clientCompany.setClientId(rs.getInt("client_id"));
+					clientCompany.setCompanyName(rs.getString("company_name"));
+					clientCompany.setCompanyType(rs.getString("company_type"));
+					clientCompany.setCompanyAddress(rs.getString("company_address"));
+					clientCompany.setPhoneNo(rs.getLong("ph_no"));
+					clientCompany.setContactPerson(rs.getString("contact_person"));
+					clientCompany.setEmailId(rs.getString("email_id"));
+					list1.add(clientCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Company Names", e);
 		}
 		return list1;
@@ -99,7 +101,7 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setInt(1, clientId);
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Delete Company Details", e);
 		}
 	}
@@ -110,15 +112,15 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		String sql = "select company_name from clientcmpy";
 		logger.info("***Display Company Names***");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					ClientCompany cc = new ClientCompany();
-					cc.setCompanyName(rs.getString("company_name"));
-					list1.add(cc);
+					ClientCompany clientCompany = new ClientCompany();
+					clientCompany.setCompanyName(rs.getString("company_name"));
+					list1.add(clientCompany);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Company Names", e);
 		}
 		return list1;
@@ -129,13 +131,13 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		String sql = "select count(company_name) from clientcmpy";
 		logger.info(sql);
 		int count = 0;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
 					count = rs.getInt("count(company_name)");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Count Company Details", e);
 		}
 		return count;
@@ -149,7 +151,8 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 			pst.setString(1, contactPerson);
 			pst.setString(2, companyName);
 			int row = pst.executeUpdate();
-		} catch (Exception e) {
+			logger.info("" + row);
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Contact Person", e);
 		}
 	}

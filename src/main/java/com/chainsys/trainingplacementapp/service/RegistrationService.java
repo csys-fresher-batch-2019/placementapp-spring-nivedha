@@ -1,5 +1,7 @@
 package com.chainsys.trainingplacementapp.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,13 @@ public class RegistrationService {
 			throw new ServiceException(e.getMessage(), e);
 		}
 	}
-
+	public List<Registration> FindRegistration() throws ServiceException {
+		List<Registration> list = null;
+		try {
+			list = registrationDAO.findAll();
+		} catch (DbException e) {
+			throw new ServiceException(e);
+		}
+		return list;
+	}
 }

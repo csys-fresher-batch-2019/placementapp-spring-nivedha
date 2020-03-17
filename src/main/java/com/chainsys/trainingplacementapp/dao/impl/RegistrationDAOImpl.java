@@ -3,6 +3,7 @@ package com.chainsys.trainingplacementapp.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +20,21 @@ import com.chainsys.trainingplacementapp.util.DbConnection;
 public class RegistrationDAOImpl implements RegistrationDAO {
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationDAOImpl.class);
 
-	public int save(Registration reg) throws DbException {
+	public int save(Registration registration) throws DbException {
 		int row = 0;
 		String sql = "insert into registration(user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender) values(user_id_seq.nextval,?,?,?,?,?,?,?)";
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			stmt.setString(1, reg.getUserName());
-			stmt.setString(2, reg.getUserPassword());
-			stmt.setString(3, reg.getUserCity());
-			stmt.setLong(4, reg.getMobileNo());
-			stmt.setString(5, reg.getMailId());
-			stmt.setString(6, reg.getQualification());
-			stmt.setString(7, reg.getGender());
-			row = stmt.executeUpdate();
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setString(1, registration.getUserName());
+			pst.setString(2, registration.getUserPassword());
+			pst.setString(3, registration.getUserCity());
+			pst.setLong(4, registration.getMobileNo());
+			pst.setString(5, registration.getMailId());
+			pst.setString(6, registration.getQualification());
+			pst.setString(7, registration.getGender());
+			row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add User Details", e);
 		}
 		return row;
@@ -48,7 +49,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pst.setInt(2, userId);
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Update Mobile Number", e);
 		}
 	}
@@ -59,22 +60,22 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		String sql = "select user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender from registration";
 		logger.info("***Display User Details***");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Registration reg = new Registration();
-					reg.setUserId(rs.getInt("user_id"));
-					reg.setUserName(rs.getString("user_name"));
-					reg.setUserPassword(rs.getString("user_password"));
-					reg.setUserCity(rs.getString("user_city"));
-					reg.setMobileNo(rs.getLong("mobile_no"));
-					reg.setMailId(rs.getString("mail_id"));
-					reg.setQualification(rs.getString("qualification"));
-					reg.setGender(rs.getString("gender"));
-					list1.add(reg);
+					Registration registration = new Registration();
+					registration.setUserId(rs.getInt("user_id"));
+					registration.setUserName(rs.getString("user_name"));
+					registration.setUserPassword(rs.getString("user_password"));
+					registration.setUserCity(rs.getString("user_city"));
+					registration.setMobileNo(rs.getLong("mobile_no"));
+					registration.setMailId(rs.getString("mail_id"));
+					registration.setQualification(rs.getString("qualification"));
+					registration.setGender(rs.getString("gender"));
+					list1.add(registration);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Details", e);
 		}
 		return list1;
@@ -88,7 +89,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pst.setInt(1, userId);
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Delete User Details", e);
 		}
 	}
@@ -99,13 +100,13 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		logger.info("***Display the No of Users***");
 		logger.info(sql);
 		int count = 0;
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
 					count = rs.getInt("count(user_id)");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Count User Details", e);
 		}
 		return count;
@@ -117,16 +118,16 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		String sql = "select qualification as qualification,count(user_id) from registration group by qualification";
 		logger.info("***Display No Of Users Based on Qualification***");
 		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					Registration reg = new Registration();
-					reg.setUserId(rs.getInt("count(user_id)"));
-					reg.setQualification(rs.getString("qualification"));
-					list1.add(reg);
+					Registration registration = new Registration();
+					registration.setUserId(rs.getInt("count(user_id)"));
+					registration.setQualification(rs.getString("qualification"));
+					list1.add(registration);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Qualification Details", e);
 		}
 		return list1;

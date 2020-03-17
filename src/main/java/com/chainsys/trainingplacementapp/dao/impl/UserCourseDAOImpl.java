@@ -4,22 +4,24 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
-
+@Repository
 public class UserCourseDAOImpl implements UserCourseDAO {
 	private static final Logger logger = LoggerFactory.getLogger(UserCourseDAOImpl.class);
 
-	public void save(UserCourse uc) throws DbException {
+	public void save(UserCourse userCourse) throws DbException {
 
 		String sql = "insert into usercourse"
 				+ "(user_course_id,user_id,course_id,start_date,completion_date,total_amount)"
@@ -28,14 +30,14 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 		logger.info("***Add Course Duration Details***");
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setInt(1, uc.getUserId());
-			pst.setInt(2, uc.getCourseId());
-			pst.setDate(3, Date.valueOf(uc.getStartDate()));
-			pst.setDate(4, Date.valueOf(uc.getCompletionDate()));
-			pst.setDouble(5, uc.getTotalAmount());
+			pst.setInt(1, userCourse.getUserId());
+			pst.setInt(2, userCourse.getCourseId());
+			pst.setDate(3, Date.valueOf(userCourse.getStartDate()));
+			pst.setDate(4, Date.valueOf(userCourse.getCompletionDate()));
+			pst.setDouble(5, userCourse.getTotalAmount());
 			int row = pst.executeUpdate();
 			logger.info("" + row);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Add User Course Details", e);
 		}
 	}
@@ -52,7 +54,7 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 					courseDuration = rs.getInt("course_duration");
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find Course Duration", e);
 		}
 		return courseDuration;
@@ -67,25 +69,25 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 			pst.setInt(1, userId);
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
-					UserCourse ucc = new UserCourse();
-					ucc.setUserCourseId(rs.getInt("user_course_id"));
-					ucc.setUserId(rs.getInt("user_id"));
-					ucc.setCourseId(rs.getInt("course_id"));
+					UserCourse userCourse = new UserCourse();
+					userCourse.setUserCourseId(rs.getInt("user_course_id"));
+					userCourse.setUserId(rs.getInt("user_id"));
+					userCourse.setCourseId(rs.getInt("course_id"));
 					Date d = rs.getDate("start_date");
 					if (d != null) {
 						LocalDate ld = d.toLocalDate();
-						ucc.setStartDate(ld);
+						userCourse.setStartDate(ld);
 					}
 					Date d1 = rs.getDate("completion_date");
 					if (d1 != null) {
 						LocalDate ld1 = d1.toLocalDate();
-						ucc.setCompletionDate(ld1);
+						userCourse.setCompletionDate(ld1);
 					}
-					ucc.setTotalAmount(rs.getDouble("total_amount"));
-					list1.add(ucc);
+					userCourse.setTotalAmount(rs.getDouble("total_amount"));
+					list1.add(userCourse);
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Course Details", e);
 		}
 		return list1;
