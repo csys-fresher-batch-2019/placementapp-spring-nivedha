@@ -7,7 +7,7 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 
 public interface CourseDAO {
 
-	void save(Course list) throws DbException;
+	void save(Course course) throws DbException;
 
 	List<Course> findByCourseName(String courseName) throws DbException;
 

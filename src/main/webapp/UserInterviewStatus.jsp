@@ -51,7 +51,7 @@ List<InterviewPerformance> list=(List <InterviewPerformance>)request.getAttribut
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getClientId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getUserId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getMarks()%></h1></td>
-<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterStatus()%></h1>
+<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewStatus()%></h1>
 <td><a href="UpdateInterviewStatus.jsp?interviewid=<%=i.getPerformId()%>">
 <h1 style="color:red; font-size:20px; font-family:courier; text-align:centre;">UPDATE</a>
 </tr>

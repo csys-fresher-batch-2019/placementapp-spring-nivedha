@@ -151,8 +151,8 @@ public class CourseDAOImpl implements CourseDAO {
 		String sql = "select course_name,course_fees from course where course_fees=(select min(course_fees) from course)";
 		logger.info("");
 		logger.info("***Display the Minimum Course Fees Names***");
-		try (Connection con = DbConnection.getConnection(); PreparedStatement stmt = con.prepareStatement(sql);) {
-			try (ResultSet rs = stmt.executeQuery();) {
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
 					Course course = new Course();
 					course.setCourseName(rs.getString("course_name"));

@@ -54,7 +54,7 @@ List<UserCompanyDTO> list=(List<UserCompanyDTO>)request.getAttribute("view_statu
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getClientId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getCompanyName()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getMarks()%></h1></td>
-<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getInterStatus()%></h1></td>
+<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=j.getInterviewStatus()%></h1></td>
 </tr>
 <%} %>
 </table>
