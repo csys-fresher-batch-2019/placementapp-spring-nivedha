@@ -13,11 +13,15 @@ import com.chainsys.trainingplacementapp.dao.AdminLoginDAO;
 import com.chainsys.trainingplacementapp.domain.AdminLogin;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
+
 @Repository
 public class AdminLoginDAOImpl implements AdminLoginDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminLoginDAOImpl.class);
 
+	/**
+	 * used to display the emailId and password from the Admin 
+	 */
 	public String findByAdminEmailAndPassword(AdminLogin adminLogin) throws DbException {
 		String msg = "";
 		String sql = "select * from admin where admin_email=? and admin_password=?";

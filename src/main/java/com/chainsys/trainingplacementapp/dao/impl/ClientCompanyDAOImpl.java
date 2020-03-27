@@ -15,10 +15,14 @@ import com.chainsys.trainingplacementapp.dao.ClientCompanyDAO;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
+
 @Repository
 public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ClientCompanyDAOImpl.class);
 
+	/**
+	 * Used to insert the new client company in the client company details
+	 */
 	public void save(ClientCompany client) throws DbException {
 
 		String sql = "insert into clientcmpy(client_id,company_name,company_type,company_address,ph_no,contact_person,email_id)values"
@@ -39,6 +43,9 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		}
 	}
 
+	/**
+	 * Used to display all the client companies
+	 */
 	public List<ClientCompany> findAll() throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
@@ -65,6 +72,9 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		return list1;
 	}
 
+	/**
+	 * Used to display all the client companies with company name
+	 */
 	public List<ClientCompany> findByCompanyName(String companyName) throws DbException {
 
 		List<ClientCompany> list1 = new ArrayList<ClientCompany>();
@@ -91,7 +101,9 @@ public class ClientCompanyDAOImpl implements ClientCompanyDAO {
 		}
 		return list1;
 	}
-
+	/**
+	 * Used to delete the client companies with clientId
+	 */
 	public void delete(int clientId) throws DbException {
 
 		String sql = "delete from clientcmpy where client_id=?";
