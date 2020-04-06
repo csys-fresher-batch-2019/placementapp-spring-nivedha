@@ -24,8 +24,8 @@ public class InterviewSchedule {
 		return clientId;
 	}
 
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
+	public int setClientId(int clientId) {
+		return this.clientId = clientId;
 	}
 
 	public String getJobTitle() {

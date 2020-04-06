@@ -2,6 +2,9 @@
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,8 +39,15 @@ UserCourse userCourse = (UserCourse)session.getAttribute("userCourse");
 <h5 class="card-title"></h5>
 <span class="btn btn-primary">      USER ID:   <%=userCourse.getUserId()%></span><br></br>
 <span class="btn btn-primary">    COURSE ID:   <%=userCourse.getCourseId()%></span><br></br>
-<span class="btn btn-primary">   START DATE:   <%=userCourse.getStartDate()%></span><br></br>
-<span class="btn btn-primary">COMPLETE DATE:   <%=userCourse.getCompletionDate()%></span><br></br>
+
+<c:set var="startDate" value="<%=userCourse.getStartDate()%>"/>
+<fmt:parseDate var="parsedStartDate" value="${startDate}" type="date" pattern="yyyy-MM-dd"/>
+<span class="btn btn-primary">   START DATE:  <fmt:formatDate pattern = "dd-MM-yyyy" value = "${parsedStartDate}" /></span><br></br>
+
+<c:set var="completeDate" value="<%=userCourse.getCompletionDate()%>"/>
+<fmt:parseDate var="parsedCompleteDate" value="${completeDate}" type="date" pattern="yyyy-MM-dd"/>
+<span class="btn btn-primary">   COMPLETE DATE:  <fmt:formatDate pattern = "dd-MM-yyyy" value = "${parsedCompleteDate}" /></span><br></br>
+
 <span class="btn btn-primary"> TOTAL AMOUNT:   <%=userCourse.getTotalAmount()%></span>
 <br></br>
 <a href="CourseEnrollmentServ">

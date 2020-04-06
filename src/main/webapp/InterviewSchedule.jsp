@@ -3,6 +3,8 @@
      <%@ page import="com.chainsys.trainingplacementapp.dao.impl.InterviewScheduleDAOImpl" %>
         <%@ page import="com.chainsys.trainingplacementapp.domain.InterviewSchedule" %>
             <%@ page import="java.util.List" %>
+             <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +20,9 @@ body {
 }
 </style>
 <body>
+
+
+
 <h1 style="color:white; font-size:25px; font-family:courier; text-align:centre;">INTERVIEW SCHEDULES</h1>
 <%
 InterviewScheduleDAOImpl impl=new InterviewScheduleDAOImpl();
@@ -50,11 +55,15 @@ for(InterviewSchedule i:list)
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getClientId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getJobTitle()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getJobRequirement()%></h1></td>
-<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewDate()%></h1></td>
+
+<c:set var="interviewDate" value="<%=i.getInterviewDate()%>"/>
+<fmt:parseDate var="parsedInterviewDate" value="${interviewDate}" type="date" pattern="yyyy-MM-dd"/>
+<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><fmt:formatDate pattern = "dd-MM-yyyy" value = "${parsedInterviewDate}" /></h1></td>
+
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=i.getInterviewTime()%></h1></td>
 <td> <% if ( noOfCourses > 0) { %>
 <a href="AttendInterviewServ?Client_id=<%=i.getClientId()%>" >
-<h1 style="color:red; font-size:20px; font-family:courier; text-align:centre;">ATTEND</a>
+<h1 style="color:red; font-size:20px; font-family:courier;text-align:centre;">ATTEND</a>
 <%} %>
 </td>
 </tr>

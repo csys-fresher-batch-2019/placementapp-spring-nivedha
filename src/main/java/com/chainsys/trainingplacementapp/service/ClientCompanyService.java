@@ -11,6 +11,8 @@ import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.domain.UserCompanyDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.exception.ServiceException;
+import com.chainsys.trainingplacementapp.exception.ValidatorException;
+import com.chainsys.trainingplacementapp.validator.Validator;
 
 @Service
 public class ClientCompanyService {
@@ -20,6 +22,9 @@ public class ClientCompanyService {
 
 	@Autowired
 	JoinDAO joinDAO;
+
+	@Autowired
+	Validator validator;
 
 	public List<ClientCompany> findCompanyDetails() throws ServiceException {
 		List<ClientCompany> list = null;
@@ -51,4 +56,14 @@ public class ClientCompanyService {
 		return list;
 	}
 
+	public void addCompanyDetails(ClientCompany clientCompany) throws ServiceException {
+		try {
+			validator.validateClientCompany(clientCompany);
+			clientCompanyDAO.save(clientCompany);
+		} catch (DbException e) {
+			throw new ServiceException(e);
+		} catch (ValidatorException e) {
+			throw new ServiceException(e.getMessage(), e);
+		}
+	}
 }

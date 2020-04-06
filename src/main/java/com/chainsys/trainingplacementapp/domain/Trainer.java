@@ -54,16 +54,16 @@ public class Trainer {
 		return emailId;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public String setEmailId(String emailId) {
+		return this.emailId = emailId;
 	}
 
 	public Long getContactNumber() {
 		return contactNumber;
 	}
 
-	public void setContactNumber(Long contactNumber) {
-		this.contactNumber = contactNumber;
+	public long setContactNumber(Long contactNumber) {
+		return this.contactNumber = contactNumber;
 	}
 
 	@Override

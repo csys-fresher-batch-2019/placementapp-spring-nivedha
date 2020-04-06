@@ -21,8 +21,8 @@ public class ClientCompany {
 		return companyName;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public String setCompanyName(String companyName) {
+		return this.companyName = companyName;
 	}
 
 	public String getCompanyType() {
@@ -45,8 +45,8 @@ public class ClientCompany {
 		return phoneNo;
 	}
 
-	public void setPhoneNo(long phoneNo) {
-		this.phoneNo = phoneNo;
+	public long setPhoneNo(long phoneNo) {
+		return this.phoneNo = phoneNo;
 	}
 
 	public String getContactPerson() {
@@ -61,8 +61,8 @@ public class ClientCompany {
 		return emailId;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public String setEmailId(String emailId) {
+		return this.emailId = emailId;
 	}
 
 	public String toString() {

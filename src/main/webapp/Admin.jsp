@@ -21,15 +21,28 @@ body {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">PASSION SOFTWARE SOLUTIONS</a>
-    </div>
+    
     <ul class="nav navbar-nav">
       <li class="active"><a href="Index.jsp">HOME</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">COMPANY DETAILS <span class="caret"></span></a>
         <ul class="dropdown-menu">
           
           <li><a href="CompanyDetailsServ">VIEW</a></li>
+           <li><a href="AddClientCompany.jsp">ADD</a></li>
+          
+        </ul>
+      </li>
+       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">INTERVIEW SCHEDULE <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li><a href="AddInterviewSchedule.jsp">ADD</a></li>
+          
+        </ul>
+      </li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">TRAINER DETAILS <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        
+           <li><a href="TrainerDetailsServ">VIEW</a></li>
+          <li><a href="AddTrainer.jsp">ADD</a></li>
           
         </ul>
       </li>

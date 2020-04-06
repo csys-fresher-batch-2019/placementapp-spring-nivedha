@@ -32,13 +32,16 @@ public class LoginServ extends HttpServlet {
 			String a = loginService.loginDetails(userName, userPassword);
 			if (a != null) {
 				sess.setAttribute("userid", a);
-				
+				System.out.println(a);
 				String gotoPage = request.getParameter("gotoPage");
-				System.out.println("GotoPAge=" + gotoPage);
-				if ( gotoPage!=null && !"".equals(gotoPage.trim()) ) {
+				System.out.println("GotoPage=" + gotoPage); 
+				if(gotoPage!=null && !"".equals(gotoPage.trim()) && !"null".equals(gotoPage)) 
+				{
+					System.out.println(gotoPage);
 					response.sendRedirect(gotoPage);
 				}
 				else{
+					System.out.println("index");
 					response.sendRedirect("Index.jsp");
 				}
 			} else
