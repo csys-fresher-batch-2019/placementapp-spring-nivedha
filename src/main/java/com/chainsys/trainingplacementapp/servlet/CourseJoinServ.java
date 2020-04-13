@@ -48,7 +48,6 @@ public class CourseJoinServ extends HttpServlet {
 			uc1.setCourseId(courseId);
 			uc1.setStartDate(currentDate);
 			list2.add(uc1);
-			// UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
 			for (UserCourse userCourse : list2) {
 				int duration = 0;
 				try {

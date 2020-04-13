@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import com.chainsys.trainingplacementapp.domain.AdminLogin;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
+import com.chainsys.trainingplacementapp.domain.Comments;
+import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.domain.InterviewSchedule;
 import com.chainsys.trainingplacementapp.domain.Registration;
 import com.chainsys.trainingplacementapp.domain.Trainer;
@@ -101,7 +103,7 @@ public class Validator {
 	}
 	
 	public void validateInterviewSchedule(InterviewSchedule i) throws ValidatorException {
-		if (i.getClientId() == 0) {
+		if (i.getClientId() <= 0) {
 			throw new ValidatorException("Client Id cannot be blank/empty");
 		}
 		if (i.getJobTitle() == null || "".equals(i.getJobTitle().trim())) {
@@ -112,6 +114,38 @@ public class Validator {
 		}		
 		if (i.getInterviewTime() == null) {
 			throw new ValidatorException("InterviewTime cannot be blank/empty");
+		}
+	
+	}
+	
+	public void validateComments(Comments c) throws ValidatorException {
+		if (c.getUserCourseId() <= 0) {
+			throw new ValidatorException("User_Course_Id cannot be blank/empty/neg");
+		}
+		if (c.getCourseComments() == null || "".equals(c.getCourseComments().trim())) {
+			throw new ValidatorException("Comments cannot be blank/empty");
+		}
+		if (c.getInstitutionRating() < 0  || c.getInstitutionRating() > 5) {
+			throw new ValidatorException("Ratings upto 5");
+		}		
+	
+	}
+	
+	public void validateCourse(Course c) throws ValidatorException {
+		if (c.getCourseName() == null || "".equals(c.getCourseName().trim())) {
+			throw new ValidatorException("CourseName cannot be blank/empty");
+		}
+		if (c.getCourseDuration() <= 0 || c.getCourseDuration() > 6 ) {
+			throw new ValidatorException("Invalid Course Duration");
+		}
+		if (c.getCourseFees() <= 0) {
+			throw new ValidatorException("Course Fees cannot be negative/empty");
+		}		
+		if (c.getCourseImage() == null || "".equals(c.getCourseImage().trim())) {
+			throw new ValidatorException("CourseImage cannot be blank/empty");
+		}
+		if (c.getCoursePdf() == null || "".equals(c.getCoursePdf().trim())) {
+			throw new ValidatorException("CoursePdf cannot be blank/empty");
 		}
 	
 	}

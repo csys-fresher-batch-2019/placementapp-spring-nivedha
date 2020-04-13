@@ -34,22 +34,25 @@ String userId = (String) sess.getAttribute("userid");
                     </div>
                     <div id="navbar" class="collapse navbar-collapse navbar-right">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">HOME</a></li>
-                            <li><a href="HomeCourse.jsp">COURSE</a></li>
+                            <li class="active">
+                            <a href="HomeCourse.jsp">COURSE</a></li>
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">CAREER <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="CompanyDetailsServ">COMPANY DETAILS</a></li>
           <li><a href="InterviewScheduleServ">INTERVIEW SCHEDULE</a></li>
-          <li><a href="ViewInterviewStatusServ">INTERVIEW STATUS</a></li>
-        </ul>
+<!--           <li><a href="ViewInterviewStatusServ">INTERVIEW STATUS</a></li>
+ -->        </ul>
       </li>
                             <li><a href="TrainerDetailsServ">TRAINER</a></li>
+                             <li><a href="CommentsDisplayServ">STUDENT SUCCESS!</a></li>
                             <% if (userId==null){ %>
                             <li><a href="Login.jsp">SIGN IN</a></li>
                             <li><a href="Register.jsp">SIGN UP</a></li>
                             <%}else { %>
-                            <li><a href=#>WELCOME <%=userId %> !!!</a></li>
-                              <li><a href=UserCourseServ>MY ENROLLMENTS!!!</a></li>
+<%--                             <li><a href=UserCourseServ>WELCOME <%=userId %> !!!</a></li>
+ --%>                            <li><a href=UserProfileServ>MY PROFILE!</a></li>
+                            
+                               <li><a href=AddComments.jsp>REVIEW</a></li>
                             <li><a href="Logout.jsp">SIGN OUT</a></li>
                             <%} %>
                             <li><a href="AdminLogin.html">ADMIN</a></li>

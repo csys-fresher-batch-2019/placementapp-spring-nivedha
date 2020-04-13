@@ -6,14 +6,9 @@ public class Comments {
 
 	private int commentsId;
 	private int userCourseId;
-	private String userName;
-	private String courseName;
-	private int trainerId;
-	private String trainerName;
 	private String courseComments;
 	private int institutionRating;
-	private int trainerRating;
-	private LocalDateTime currentDate;
+	private LocalDateTime createdDate;
 
 	public int getCommentsId() {
 		return commentsId;
@@ -27,41 +22,11 @@ public class Comments {
 		return userCourseId;
 	}
 
-	public void setUserCourseId(int userCourseId) {
-		this.userCourseId = userCourseId;
+	public int setUserCourseId(int userCourseId) {
+		return this.userCourseId = userCourseId;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-	public int getTrainerId() {
-		return trainerId;
-	}
-
-	public void setTrainerId(int trainerId) {
-		this.trainerId = trainerId;
-	}
-
-	public String getTrainerName() {
-		return trainerName;
-	}
-
-	public void setTrainerName(String trainerName) {
-		this.trainerName = trainerName;
-	}
+	
 
 	public String getCourseComments() {
 		return courseComments;
@@ -79,27 +44,18 @@ public class Comments {
 		this.institutionRating = institutionRating;
 	}
 
-	public int getTrainerRating() {
-		return trainerRating;
+	
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setTrainerRating(int trainerRating) {
-		this.trainerRating = trainerRating;
-	}
-
-	public LocalDateTime getCurrentDate() {
-		return currentDate;
-	}
-
-	public void setCurrentDate(LocalDateTime currentDate) {
-		this.currentDate = currentDate;
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Comments [commentsId=" + commentsId + ", userId=" + userCourseId + ", userName=" + userName
-				+ ", courseName=" + courseName + ", trainerId=" + trainerId + ", trainerName=" + trainerName
-				+ ", courseComments=" + courseComments + ", institutionRating=" + institutionRating + ", trainerRating="
-				+ trainerRating + ", currentDate=" + currentDate + "]";
+		return "Comments [commentsId=" + commentsId + ", userId=" + userCourseId + ", userName=" + ", courseComments=" + courseComments + ", institutionRating=" + institutionRating +
+				 ", createdDate=" + createdDate + "]";
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
+import com.chainsys.trainingplacementapp.domain.UserCourseDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
 @Repository
@@ -60,13 +61,48 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 		return courseDuration;
 	}
 
-	public List<UserCourse> findAllByUserId(int userId) throws DbException {
+	public List<UserCourseDTO> findAllByUserId(int userId) throws DbException {
 
-		List<UserCourse> list1 = new ArrayList<UserCourse>();
-		String sql = "select user_course_id,user_id,course_id,start_date,completion_date,total_amount from usercourse where user_id=?";
+		List<UserCourseDTO> list1 = new ArrayList<UserCourseDTO>();
+		String sql = "select uc.user_course_id,uc.user_id,r.user_name,uc.course_id,c.course_name,uc.start_date,uc.completion_date,uc.total_amount from usercourse uc,registration r,course c where uc.user_id=r.user_id and uc.course_id=c.course_id and uc.user_id=?";
 		logger.info("***Display UserCourse Details***");
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, userId);
+			try (ResultSet rs = pst.executeQuery();) {
+				while (rs.next()) {
+					UserCourseDTO userCourse = new UserCourseDTO();
+					userCourse.setUserCourseId(rs.getInt("user_course_id"));
+					userCourse.setUserId(rs.getInt("user_id"));
+					userCourse.setCourseId(rs.getInt("course_id"));
+					userCourse.setUserName(rs.getString("user_name"));
+					userCourse.setCourseName(rs.getString("course_name"));
+					Date d = rs.getDate("start_date");
+					if (d != null) {
+						LocalDate ld = d.toLocalDate();
+						userCourse.setStartDate(ld);
+					}
+					Date d1 = rs.getDate("completion_date");
+					if (d1 != null) {
+						LocalDate ld1 = d1.toLocalDate();
+						userCourse.setCompletionDate(ld1);
+					}
+					userCourse.setTotalAmount(rs.getDouble("total_amount"));
+					list1.add(userCourse);
+					System.out.println(list1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DbException("Unable to Find User Course Details", e);
+		}
+		return list1;
+	}
+
+	@Override
+	public List<UserCourse> findAll() throws DbException {
+		List<UserCourse> list1 = new ArrayList<UserCourse>();
+		String sql = "select user_course_id,user_id,course_id,start_date,completion_date,total_amount from usercourse";
+		logger.info("***Display UserCourse Details***");
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
 					UserCourse userCourse = new UserCourse();
@@ -91,5 +127,6 @@ public class UserCourseDAOImpl implements UserCourseDAO {
 			throw new DbException("Unable to Find User Course Details", e);
 		}
 		return list1;
+
 	}
 }

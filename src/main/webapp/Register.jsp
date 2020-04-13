@@ -18,7 +18,7 @@ body {
 </style>
 <body>
 
-<form action="RegistrationServ" autocomplete="off">
+<form method="POST" enctype="multipart/form-data" action="RegistrationServ" autocomplete="off">
 <div style="text-align:centre">
 <pre>
 <br></br>
@@ -34,7 +34,7 @@ if(errorMessage !=null)
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">City           <input type="text" name="city"  required/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Mobile Number  <input type="text" name="mobileno"  required/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Email Id       <input type="email" name="email"  required/>
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Qualification          <select name="qualification" required>
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">Qualification        <select name="qualification" required>
                      <option value="BE-CS" > BE-CS </option>
                      <option value="BE-EEE" >BE-EEE </option>
                      <option value="BE-ECE" >BE-ECE </option>
@@ -44,6 +44,7 @@ if(errorMessage !=null)
                      </select>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Gender              <input type="radio" name="gender" value="male" required> Male  
                     <input type="radio" name="gender" value="female" required>Female 
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">                    Profile  <input type="text" name="imagename"  required/><input type="file" name="image"/>
 </pre>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">                     <button type="submit" >SIGN UP</button><br></br>
 </div>

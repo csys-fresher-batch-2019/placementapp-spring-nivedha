@@ -9,6 +9,7 @@ public class Registration {
 	private long mobileNo;
 	private String qualification;
 	private String gender;
+	private String profile;
 
 	public int getUserId() {
 		return userId;
@@ -78,7 +79,15 @@ public class Registration {
 	public String toString() {
 		return "Registration [userId=" + userId + ", userName=" + userName + ", mailId=" + mailId + ", userPassword="
 				+ userPassword + ", userCity=" + userCity + ", mobileNo=" + mobileNo + ", qualification="
-				+ qualification + ", gender=" + gender + "]";
+				+ qualification + ", gender=" + gender + ",profile=" + profile +"]";
+	}
+
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 
 }

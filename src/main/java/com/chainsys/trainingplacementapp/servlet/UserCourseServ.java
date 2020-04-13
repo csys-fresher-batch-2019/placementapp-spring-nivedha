@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chainsys.trainingplacementapp.domain.UserCourse;
+import com.chainsys.trainingplacementapp.domain.UserCourseDTO;
 import com.chainsys.trainingplacementapp.service.UserCourseService;
 
 @WebServlet("/UserCourseServ")
@@ -31,7 +31,7 @@ public class UserCourseServ extends HttpServlet {
 		HttpSession sess = request.getSession(false);
 		userId = Integer.parseInt((String) sess.getAttribute("userid"));
 		// UserCourseDAO impl1 = DAOFactory.getUserCourseDAO();
-		List<UserCourse> list = null;
+		List<UserCourseDTO> list = null;
 		try {
 			System.out.println(userId);
 			list = userCourseService.findUserCourseById(userId);

@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 public class UserCourseDTO {
 
+	private int userCourseId;
 	private int courseId;
 	private String courseName;
 	private int courseDuration;
 	private int courseFees;
 	private int userId;
+	private String userName;
 	private LocalDate startDate;
 	private LocalDate completionDate;
 	private double totalAmount;
@@ -76,10 +78,25 @@ public class UserCourseDTO {
 	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
+	
+	public String getUserName() {
+		return userName;
+	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public int getUserCourseId() {
+		return userCourseId;
+	}
+
+	public void setUserCourseId(int userCourseId) {
+		this.userCourseId = userCourseId;
+	}
 	@Override
 	public String toString() {
-		return "JoinUserCourse [courseId=" + courseId + ", courseName=" + courseName + ", courseDuration="
+		return "JoinUserCourse [courseId=" + courseId + ", courseName=" + courseName + ", userName=" + userName + ", courseDuration="
 				+ courseDuration + ", courseFees=" + courseFees + ", userId=" + userId + ", startDate=" + startDate
 				+ ", completionDate=" + completionDate + ", totalAmount=" + totalAmount + "]";
 	}

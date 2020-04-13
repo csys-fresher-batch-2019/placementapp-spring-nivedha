@@ -67,6 +67,7 @@
         </ul>
       </li>
                             <li><a href="TrainerDetailsServ">TRAINER</a></li>
+                            <li><a href="CommentsDisplayServ">STUDENT SUCCESS</a></li>
                             <li><a href="Login.jsp">SIGN IN</a></li>
                             <li><a href="Register.jsp">SIGN UP</a></li>
                             <li><a href="index.html">SIGN OUT</a></li>

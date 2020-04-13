@@ -39,4 +39,14 @@ public class RegistrationService {
 		}
 		return list;
 	}
+	
+	public List<Registration> FindRegistrationById(int userId) throws ServiceException {
+		List<Registration> list = null;
+		try {
+			list = registrationDAO.findByUserId(userId);
+		} catch (DbException e) {
+			throw new ServiceException(e);
+		}
+		return list;
+	}
 }

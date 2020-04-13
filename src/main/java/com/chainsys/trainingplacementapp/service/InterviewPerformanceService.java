@@ -8,19 +8,19 @@ import org.springframework.stereotype.Service;
 import com.chainsys.trainingplacementapp.dao.InterviewPerformanceDAO;
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.InterviewPerformance;
-import com.chainsys.trainingplacementapp.domain.UserCourse;
+import com.chainsys.trainingplacementapp.domain.UserCourseDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.exception.ServiceException;
 
 @Service
 public class InterviewPerformanceService {
-
-	@Autowired
-	InterviewPerformanceDAO interviewPerformanceDAO;
 	
 	@Autowired
 	UserCourseDAO userCourseDAO;
 
+	@Autowired
+	InterviewPerformanceDAO interviewPerformanceDAO;
+	
 	public List<InterviewPerformance> findInterviewPerformance() throws ServiceException {
 		List<InterviewPerformance> list = null;
 		try {
@@ -34,7 +34,7 @@ public class InterviewPerformanceService {
 	public int getNoOfCourses(int userId) {
 		int noOfCourses = 0;
 		try {
-			List<UserCourse> courses = userCourseDAO.findAllByUserId(userId);
+			List<UserCourseDTO> courses =userCourseDAO.findAllByUserId(userId);
 			noOfCourses = courses.size();
 		} catch (DbException e) {
 			e.printStackTrace();

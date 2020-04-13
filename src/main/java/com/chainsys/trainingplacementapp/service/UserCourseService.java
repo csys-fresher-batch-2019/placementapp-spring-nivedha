@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.chainsys.trainingplacementapp.dao.UserCourseDAO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
+import com.chainsys.trainingplacementapp.domain.UserCourseDTO;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.exception.ServiceException;
 
@@ -33,10 +34,20 @@ public class UserCourseService {
 		return duration;
 	}
 
-	public List<UserCourse> findUserCourseById(int userId) throws ServiceException {
-		List<UserCourse> list = null;
+	public List<UserCourseDTO> findUserCourseById(int userId) throws ServiceException {
+		List<UserCourseDTO> list = null;
 		try {
 			list=userCourseDAO.findAllByUserId(userId);
+		} catch (DbException e) {
+			throw new ServiceException(e);
+		}
+		return list;
+	}
+	
+	public List<UserCourse> findAllUserCourse() throws ServiceException {
+		List<UserCourse> list = null;
+		try {
+			list=userCourseDAO.findAll();
 		} catch (DbException e) {
 			throw new ServiceException(e);
 		}

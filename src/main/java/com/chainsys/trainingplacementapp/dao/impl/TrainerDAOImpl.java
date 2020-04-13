@@ -61,4 +61,21 @@ public class TrainerDAOImpl implements TrainerDAO {
 		}
 		return list;
 	}
+
+	@Override
+	public String findTrainerNameById(int trainerId) throws DbException {
+		String sql = "select trainer_name from trainer where trainer_id=?";
+		String TrainerName = null;
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, trainerId);
+			try (ResultSet rs = pst.executeQuery();) {
+				if (rs.next()) {
+					TrainerName = rs.getString("trainer_name");
+				}
+			}
+		} catch (SQLException e) {
+			throw new DbException("Unable to Find Trainer Name", e);
+		}
+		return TrainerName;
+	}
 }

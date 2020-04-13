@@ -22,7 +22,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 
 	public int save(Registration registration) throws DbException {
 		int row = 0;
-		String sql = "insert into registration(user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender) values(user_id_seq.nextval,?,?,?,?,?,?,?)";
+		String sql = "insert into registration(user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender,profile) values(user_id_seq.nextval,?,?,?,?,?,?,?,?)";
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setString(1, registration.getUserName());
@@ -32,6 +32,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pst.setString(5, registration.getMailId());
 			pst.setString(6, registration.getQualification());
 			pst.setString(7, registration.getGender());
+			pst.setString(8, registration.getProfile());
 			row = pst.executeUpdate();
 			logger.info("" + row);
 		} catch (SQLException e) {
@@ -57,7 +58,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 	public List<Registration> findAll() throws DbException {
 
 		List<Registration> list1 = new ArrayList<Registration>();
-		String sql = "select user_id,user_name,user_password,user_city,mobile_no,mail_id,qualification,gender from registration";
+		String sql = "select * from registration";
 		logger.info("***Display User Details***");
 		logger.info(sql);
 		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -72,6 +73,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 					registration.setMailId(rs.getString("mail_id"));
 					registration.setQualification(rs.getString("qualification"));
 					registration.setGender(rs.getString("gender"));
+					registration.setProfile(rs.getString("profile"));
 					list1.add(registration);
 				}
 			}
@@ -129,6 +131,35 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			}
 		} catch (SQLException e) {
 			throw new DbException("Unable to Find User Qualification Details", e);
+		}
+		return list1;
+	}
+
+	@Override
+	public List<Registration> findByUserId(int userId) throws DbException {
+		List<Registration> list1 = new ArrayList<Registration>();
+		String sql = "select * from registration where user_id=?";
+		logger.info("***Display User Details***");
+		logger.info(sql);
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, userId);
+			try (ResultSet rs = pst.executeQuery();) {
+				while (rs.next()) {
+					Registration registration = new Registration();
+					registration.setUserId(rs.getInt("user_id"));
+					registration.setUserName(rs.getString("user_name"));
+					registration.setUserPassword(rs.getString("user_password"));
+					registration.setUserCity(rs.getString("user_city"));
+					registration.setMobileNo(rs.getLong("mobile_no"));
+					registration.setMailId(rs.getString("mail_id"));
+					registration.setQualification(rs.getString("qualification"));
+					registration.setGender(rs.getString("gender"));
+					registration.setProfile(rs.getString("profile"));
+					list1.add(registration);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DbException("Unable to Find User Details", e);
 		}
 		return list1;
 	}

@@ -12,6 +12,8 @@ public interface RegistrationDAO {
 	void update(int userId, long mobileNo) throws DbException;
 
 	List<Registration> findAll() throws DbException;
+	
+	List<Registration> findByUserId(int userId) throws DbException;
 
 	void delete(int userId) throws DbException;
 

@@ -30,6 +30,7 @@ public class CompanyDetailsServ extends HttpServlet {
 		try {
 			// list1 = impl.findAll();
 			list = clientCompanyService.findCompanyDetails();
+			System.out.println(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

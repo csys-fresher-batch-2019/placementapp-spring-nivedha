@@ -19,6 +19,8 @@ body {
 	background-attachment: fixed;
 	background-size: cover;
 }
+
+
 </style>
 <body>
 	<a href="Index.jsp">

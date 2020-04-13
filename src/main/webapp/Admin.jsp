@@ -24,6 +24,15 @@ body {
     
     <ul class="nav navbar-nav">
       <li class="active"><a href="Index.jsp">HOME</a></li>
+      
+       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">COURSE DETAILS <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+                     <li><a href="AddCourse.jsp">ADD</a></li>
+          
+        </ul>
+      </li>
+      
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">COMPANY DETAILS <span class="caret"></span></a>
         <ul class="dropdown-menu">
           

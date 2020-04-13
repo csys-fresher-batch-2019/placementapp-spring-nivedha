@@ -10,4 +10,7 @@ public interface TrainerDAO {
 	public void save(Trainer trainer) throws DbException;
 
 	List<Trainer> findAll() throws DbException;
+	
+	String findTrainerNameById(int trainerId) throws DbException;
+
 }

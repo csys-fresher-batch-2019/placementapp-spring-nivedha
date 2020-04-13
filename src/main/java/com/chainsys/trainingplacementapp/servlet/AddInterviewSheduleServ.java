@@ -69,7 +69,7 @@ public class AddInterviewSheduleServ extends HttpServlet {
 				interviewScheduleService.addInterviewScheduleDetails(interviewSchedule);
 			}
 			out.println(is.getInterviewId() + " " + "inserted successfully");
-			response.sendRedirect("InterviewScheduleServ");
+			response.sendRedirect("Admin.jsp");
 			}else
 			{
 				request.setAttribute("errorMessage", "Invalid Client Id!!!...");
