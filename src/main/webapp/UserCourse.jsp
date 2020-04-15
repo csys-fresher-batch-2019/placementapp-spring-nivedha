@@ -3,6 +3,8 @@
     <%@ page import="com.chainsys.trainingplacementapp.dao.impl.UserCourseDAOImpl" %>
         <%@ page import="com.chainsys.trainingplacementapp.domain.UserCourseDTO" %>
             <%@ page import="java.util.List" %>
+             <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         
     
 <!DOCTYPE html >
@@ -52,8 +54,15 @@ userId=Integer.parseInt((String) sess.getAttribute("userid"));
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getUserCourseId()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getUserName()%></h1></td>
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getCourseName()%></h1></td>
-<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getStartDate()%></h1></td>
-<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getCompletionDate()%></h1>
+
+<c:set var="startDate" value="<%=uc.getStartDate()%>"/>
+<fmt:parseDate var="parsedStartDate" value="${startDate}" type="date" pattern="yyyy-MM-dd"/>
+<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><fmt:formatDate pattern = "dd-MM-yyyy" value = "${parsedStartDate}" /></h1></td>
+
+<c:set var="completeDate" value="<%=uc.getCompletionDate()%>"/>
+<fmt:parseDate var="parsedCompleteDate" value="${completeDate}" type="date" pattern="yyyy-MM-dd"/>
+<td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><fmt:formatDate pattern = "dd-MM-yyyy" value = "${parsedCompleteDate}" /></h1></td>
+
 <td><h1 style="color:white; font-size:20px; font-family:courier; text-align:centre;"><%=uc.getTotalAmount()%></h1></td>
 </tr>
 <%} %>
