@@ -41,20 +41,6 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		return row;
 	}
 
-	public void update(int userId, long mobileNo) throws DbException {
-
-		String sql = "update registration set mobile_no=? where user_id=?";
-		logger.info(sql);
-		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setLong(1, mobileNo);
-			pst.setInt(2, userId);
-			int row = pst.executeUpdate();
-			logger.info("" + row);
-		} catch (SQLException e) {
-			throw new DbException("Unable to Update Mobile Number", e);
-		}
-	}
-
 	public List<Registration> findAll() throws DbException {
 
 		List<Registration> list1 = new ArrayList<Registration>();
@@ -162,5 +148,27 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			throw new DbException("Unable to Find User Details", e);
 		}
 		return list1;
+	}
+
+	@Override
+	public void update(String userName, String mailId, String password, String profile, String userCity, long mobileNo,
+			String qualification, String gender, int userId) throws DbException {
+		String sql = "update registration set user_name=?,mail_id=?,user_password=?,profile=?,user_city=?,mobile_no=?,qualification=?,gender=? where user_id=?";
+		logger.info(sql);
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setString(1, userName);
+			pst.setString(2, mailId);
+			pst.setString(3, password);
+			pst.setString(4, profile);
+			pst.setString(5, userCity);
+			pst.setLong(6, mobileNo);
+			pst.setString(7, qualification);
+			pst.setString(8, gender);
+			pst.setInt(9, userId);
+			int row = pst.executeUpdate();
+			logger.info("" + row);
+		} catch (SQLException e) {
+			throw new DbException("Unable to Update User Details", e);
+		}
 	}
 }

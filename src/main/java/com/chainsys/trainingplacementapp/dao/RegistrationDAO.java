@@ -9,7 +9,7 @@ public interface RegistrationDAO {
 
 	int save(Registration list) throws DbException;
 
-	void update(int userId, long mobileNo) throws DbException;
+	void update(String userName,String mailId,String password,String profile,String userCity,long mobileNo,String qualification,String gender,int userId) throws DbException;
 
 	List<Registration> findAll() throws DbException;
 	

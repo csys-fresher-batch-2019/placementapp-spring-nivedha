@@ -49,4 +49,12 @@ public class RegistrationService {
 		}
 		return list;
 	}
+	
+	public void updateUserProfile(String userName,String mailId,String password,String profile,String userCity,long mobileNo,String qualification,String gender,int userId) throws ServiceException {
+		try {
+			registrationDAO.update(userName, mailId, password, profile, userCity, mobileNo, qualification, gender, userId);
+		} catch (DbException e) {
+			throw new ServiceException(e);
+		}
+	}
 }

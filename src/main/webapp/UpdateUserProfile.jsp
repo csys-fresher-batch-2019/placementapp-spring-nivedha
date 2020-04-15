@@ -99,30 +99,29 @@ body{
 }
 </style>
 <body>
-<form action="UpdateUserProfile.jsp">
-<%
-			List<Registration> list = (List<Registration>) request.getAttribute("PROFILE");
-
-			for (Registration r : list) {
-		%>
+<form method="POST" enctype="multipart/form-data" action="UpdateUserProfileServ">
+  
+<%HttpSession sess = request.getSession();
+ Registration reg=(Registration)session.getAttribute("UserProfile");
+%>
 <div class="container emp-profile">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="assets/images/studentprofile/<%=r.getProfile()%>">
-                           <!--  <div class="file btn btn-lg btn-primary">
+                            <img src="assets/images/studentprofile/<%=reg.getProfile()%>">
+                            <div class="file btn btn-lg btn-primary">
                                 Change Photo
-                                <input type="file" name="file"/>
-                            </div> -->
+                                <input type="file" name="image"/>
+                            </div> 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
                                     <h1>
-                                        <%=r.getUserName()%>
+                                        <%=reg.getUserName()%>
                                     </h1>
                                <br/>
-                               <br/><br/><br/><br/><br/>
+                               <br/><br/><br/>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -131,8 +130,8 @@ body{
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
-                    </div>
+                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="UPDATE"/>
+                    </div> 
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -152,7 +151,8 @@ body{
                                                 <label>User Id</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getUserId()%></p>
+                                            <p><input type="number" name="userId" value="<%=reg.getUserId()%>"/>
+                                               </p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -160,7 +160,7 @@ body{
                                                 <label>Name</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getUserName()%></p>
+                                                <p><input type="text" name="userName" value="<%=reg.getUserName()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -168,7 +168,7 @@ body{
                                                 <label>Password</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getUserPassword()%></p>
+                                                <p><input type="text" name="password" value="<%=reg.getUserPassword()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -176,7 +176,7 @@ body{
                                                 <label>Qualification</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getQualification()%></p>
+                                                <p><input type="text" name="qualification" value="<%=reg.getQualification()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -184,7 +184,7 @@ body{
                                                 <label>Gender</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getGender()%></p>
+                                                <p><input type="text" name="gender" value="<%=reg.getGender()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -192,7 +192,7 @@ body{
                                                 <label>City</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getUserCity()%></p>
+                                                <p><input type="text" name="city" value="<%=reg.getUserCity()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -200,7 +200,7 @@ body{
                                                 <label>Email</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getMailId()%></p>
+                                                <p><input type="text" name="email" value="<%=reg.getMailId()%>"/></p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -208,15 +208,19 @@ body{
                                                 <label>Phone</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><%=r.getMobileNo()%></p>
+                                                <p><input type="text" name="mobileNo" value="<%=reg.getMobileNo()%>"/></p>
                                             </div>
                                         </div>
-                                   <%HttpSession sess = request.getSession();
-                           		sess.setAttribute("UserProfile", r);%>
-                            </div>
-                            <%} %>
-                           		
-                            
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Profile</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><input type="text" name="imageName" value="<%=reg.getProfile()%>"/></p>
+                                            </div>
+                                        </div>
+                                  
+                            </div> 
                         </div>
                     </div>
                 </div>
