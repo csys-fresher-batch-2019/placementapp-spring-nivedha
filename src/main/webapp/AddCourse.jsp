@@ -16,7 +16,7 @@ body {
 }
 </style>
 <body>
-<form action="AddCourseServ" autocomplete="off">
+<form method="POST" enctype="multipart/form-data" action="AddCourseServ" autocomplete="off">
 <div style="text-align:centre">
 <pre>
 <br></br>
@@ -30,8 +30,8 @@ if(errorMessage !=null)
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Course Name         <input type="text" name="name" required autofocus/>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Course Duration       <input type="number" name="duration" required/>  
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Course Fees         <input type="number" name="fees"  required/>
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">               Course Pdf         <input type="file" name="pdf"  required/>
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">               Course Image       <input type="file" name="image"  required/>
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">                Course Pdf    <input type="text" name="pdfname"  required/><input type="file" name="pdf"  required/>
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">                Course Image  <input type="text" name="imagename"  required/><input type="file" name="image"  required/>
 </pre>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">                     <button type="submit" >ADD</button><br></br>
 </div>

@@ -121,7 +121,7 @@ body{
                                         <%=reg.getUserName()%>
                                     </h1>
                                <br/>
-                               <br/><br/><br/>
+                               <br/><br/><br/><br/><br/>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -151,7 +151,7 @@ body{
                                                 <label>User Id</label>
                                             </div>
                                             <div class="col-md-6">
-                                            <p><input type="number" name="userId" value="<%=reg.getUserId()%>"/>
+                                            <p><input type="number" name="userId" value="<%=reg.getUserId()%>" readonly/>
                                                </p>
                                             </div>
                                         </div>

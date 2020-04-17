@@ -109,12 +109,23 @@ body{
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="assets/images/studentprofile/<%=r.getProfile()%>">
-                           <!--  <div class="file btn btn-lg btn-primary">
-                                Change Photo
-                                <input type="file" name="file"/>
-                            </div> -->
-                        </div>
+                        <%
+					if (r.getProfile() == null) {
+							if ("female".equals(r.getGender())) {
+				%>
+				<img src="assets/images/studentprofile/female.png">
+				
+				<%
+					} else {
+				%>
+				<img src="assets/images/studentprofile/male.png">
+				<%
+					}
+						} else {
+				%>
+				<img src="assets/images/studentprofile/<%=r.getProfile()%>">
+				<%} %>
+				  </div>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">

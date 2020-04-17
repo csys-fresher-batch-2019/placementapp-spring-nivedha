@@ -44,7 +44,7 @@ if(errorMessage !=null)
                      </select>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">Gender              <input type="radio" name="gender" value="male" required> Male  
                     <input type="radio" name="gender" value="female" required>Female 
-<p style="color:white; font-size:20px; font-family:courier;text-align:center;">                    Profile  <input type="text" name="imagename"  required/><input type="file" name="image"/>
+<p style="color:white; font-size:20px; font-family:courier;text-align:center;">                    Profile  <input type="text" name="imagename"/><input type="file" name="image"/>
 </pre>
 <p style="color:white; font-size:20px; font-family:courier;text-align:center;">                     <button type="submit" >SIGN UP</button><br></br>
 </div>

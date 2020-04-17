@@ -50,7 +50,7 @@ body {
 		<input type="hidden" name="gotoPage" value="<%=request.getParameter("gotoPage")%>"  >
 			<p
 				style="color: white; font-size: 20px; font-family: courier; text-align: center;">
-				Email Id <input type="text" name="name" /> <br />
+				Email Id <input type="text" name="name" autofocus/> <br />
 				<br />
 			<p
 				style="color: white; font-size: 20px; font-family: courier; text-align: center;">

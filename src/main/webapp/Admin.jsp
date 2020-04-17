@@ -25,6 +25,14 @@ body {
     <ul class="nav navbar-nav">
       <li class="active"><a href="Index.jsp">HOME</a></li>
       
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">USER DETAILS <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+                     <li><a href="ViewAllUsersServ">VIEW</a></li>
+          
+        </ul>
+      </li>
+      
        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">COURSE DETAILS <span class="caret"></span></a>
         <ul class="dropdown-menu">
           
@@ -69,8 +77,8 @@ body {
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="Index.jsp"><span class="glyphicon glyphicon-user"></span> Sign Out</a></li>
-      <li><a href="AdminLogin.html"><span class="glyphicon glyphicon-log-in"></span>Sign In</a></li>
-    </ul>
+<!--       <li><a href="AdminLogin.html"><span class="glyphicon glyphicon-log-in"></span>Sign In</a></li>
+ -->    </ul>
   </div>
 </nav>
 </body>
