@@ -50,7 +50,7 @@
        	border: 5px solid white;
        }
 
-       .image_outer_container .green_icon{
+       /* .image_outer_container .green_icon{
          background-color: #4cd137;
          position: absolute;
          right: 30px;
@@ -59,7 +59,7 @@
          width: 30px;
          border:5px solid white;
          border-radius: 50%;
-       }
+       } */
 
 p.a {
   font-family: "Times New Roman", Times, serif;
@@ -98,7 +98,22 @@ p.a {
 			<div class="image_outer_container">
 				<div class="green_icon"></div>
 				<div class="image_inner_container">
-					<img src="assets/images/studentprofile/<%=c.getProfile()%>">
+				 <%
+					if (c.getProfile() == null) {
+							if ("female".equals(c.getGender())) {
+				%>
+				<img src="assets/images/studentprofile/female.png">
+				
+				<%
+					} else {
+				%>
+				<img src="assets/images/studentprofile/male.png">
+				<%
+					}
+						} else {
+				%>
+				<img src="assets/images/studentprofile/<%=c.getProfile()%>">
+				<%} %>
 				</div>
 			</div>
 		</div>

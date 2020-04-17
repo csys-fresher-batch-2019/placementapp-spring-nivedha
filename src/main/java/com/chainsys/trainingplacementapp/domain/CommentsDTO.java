@@ -11,6 +11,7 @@ public class CommentsDTO {
 	private int institutionRating;
 	private LocalDateTime createdDate;
 	private String profile;
+	private String gender;
 
 	
 	public int getUserCourseId() {
@@ -53,13 +54,19 @@ public class CommentsDTO {
 	public String toString() {
 		return "CommentsDTO [userCourseId=" + userCourseId + ", userName=" + userName + ",profile=" + profile + ", courseName=" + courseName
 				+ ", courseComments=" + courseComments + ", institutionRating=" + institutionRating + ", createdDate="
-				+ createdDate + "]";
+				+ createdDate + ", gender=" + gender + "]";
 	}
 	public String getProfile() {
 		return profile;
 	}
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 
