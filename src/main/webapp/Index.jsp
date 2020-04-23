@@ -40,6 +40,7 @@ String userId = (String) sess.getAttribute("userid");
         <ul class="dropdown-menu">
           <li><a href="CompanyDetailsServ">COMPANY DETAILS</a></li>
           <li><a href="InterviewScheduleServ">INTERVIEW SCHEDULE</a></li>
+          <li><a href="QuestionCategoryServ">INTERVIEW QUESTIONS</a></li>
 <!--           <li><a href="ViewInterviewStatusServ">INTERVIEW STATUS</a></li>
  -->        </ul>
       </li>

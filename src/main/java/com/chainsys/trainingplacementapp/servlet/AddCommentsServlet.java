@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chainsys.trainingplacementapp.domain.Comments;
-import com.chainsys.trainingplacementapp.domain.CommentsDTO;
 import com.chainsys.trainingplacementapp.domain.UserCourse;
 import com.chainsys.trainingplacementapp.service.CommentsService;
 import com.chainsys.trainingplacementapp.service.UserCourseService;
@@ -53,12 +52,12 @@ public class AddCommentsServlet extends HttpServlet {
 				}
 			}
 			if (status) {
-						for (Comments comments : list) {
-							commentsService.addComments(comments);
-							response.sendRedirect("CommentsDisplayServ");
-						}
+				for (Comments comments : list) {
+					commentsService.addComments(comments);
+					response.sendRedirect("CommentsDisplayServ");
 				}
-				
+			}
+
 			else {
 				request.setAttribute("errorMessage", "Invalid ID!!!");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("AddComments.jsp");
