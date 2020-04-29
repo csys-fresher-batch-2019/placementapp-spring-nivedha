@@ -3,10 +3,13 @@ package com.chainsys.trainingplacementapp.validator;
 import org.springframework.stereotype.Component;
 
 import com.chainsys.trainingplacementapp.domain.AdminLogin;
+import com.chainsys.trainingplacementapp.domain.Answer;
 import com.chainsys.trainingplacementapp.domain.ClientCompany;
 import com.chainsys.trainingplacementapp.domain.Comments;
 import com.chainsys.trainingplacementapp.domain.Course;
 import com.chainsys.trainingplacementapp.domain.InterviewSchedule;
+import com.chainsys.trainingplacementapp.domain.Question;
+import com.chainsys.trainingplacementapp.domain.QuestionCategory;
 import com.chainsys.trainingplacementapp.domain.Registration;
 import com.chainsys.trainingplacementapp.domain.Trainer;
 import com.chainsys.trainingplacementapp.exception.ValidatorException;
@@ -56,6 +59,7 @@ public class Validator {
 			throw new ValidatorException("Password cannot be blank/empty");
 		}
 	}
+
 	public void validateTrainer(Trainer t) throws ValidatorException {
 		if (t.getTrainerName() == null || "".equals(t.getTrainerName().trim())) {
 			throw new ValidatorException("Name cannot be blank/empty");
@@ -76,9 +80,9 @@ public class Validator {
 				|| Long.toString(t.getContactNumber()).length() > 10) {
 			throw new ValidatorException("Invalid Mobile Number");
 		}
-	
+
 	}
-	
+
 	public void validateClientCompany(ClientCompany c) throws ValidatorException {
 		if (c.getCompanyName() == null || "".equals(c.getCompanyName().trim())) {
 			throw new ValidatorException("CompanyName cannot be blank/empty");
@@ -88,7 +92,7 @@ public class Validator {
 		}
 		if (c.getCompanyAddress() == null || "".equals(c.getCompanyAddress().trim())) {
 			throw new ValidatorException("CompanyAddress cannot be blank/empty");
-		}		
+		}
 		if (c.getPhoneNo() <= 0 || Long.toString(c.getPhoneNo()).length() < 10
 				|| Long.toString(c.getPhoneNo()).length() > 10) {
 			throw new ValidatorException("Invalid Mobile Number");
@@ -99,9 +103,9 @@ public class Validator {
 		if (c.getEmailId() == null || "".equals(c.getEmailId().trim())) {
 			throw new ValidatorException("Email Id cannot be blank/empty");
 		}
-	
+
 	}
-	
+
 	public void validateInterviewSchedule(InterviewSchedule i) throws ValidatorException {
 		if (i.getClientId() <= 0) {
 			throw new ValidatorException("Client Id cannot be blank/empty");
@@ -111,13 +115,13 @@ public class Validator {
 		}
 		if (i.getJobRequirement() == null || "".equals(i.getJobRequirement().trim())) {
 			throw new ValidatorException("JobRequirement cannot be blank/empty");
-		}		
+		}
 		if (i.getInterviewTime() == null) {
 			throw new ValidatorException("InterviewTime cannot be blank/empty");
 		}
-	
+
 	}
-	
+
 	public void validateComments(Comments c) throws ValidatorException {
 		if (c.getUserCourseId() <= 0) {
 			throw new ValidatorException("User_Course_Id cannot be blank/empty/neg");
@@ -125,28 +129,46 @@ public class Validator {
 		if (c.getCourseComments() == null || "".equals(c.getCourseComments().trim())) {
 			throw new ValidatorException("Comments cannot be blank/empty");
 		}
-		if (c.getInstitutionRating() < 0  || c.getInstitutionRating() > 5) {
+		if (c.getInstitutionRating() < 0 || c.getInstitutionRating() > 5) {
 			throw new ValidatorException("Ratings upto 5");
-		}		
-	
+		}
+
 	}
-	
+
 	public void validateCourse(Course c) throws ValidatorException {
 		if (c.getCourseName() == null || "".equals(c.getCourseName().trim())) {
 			throw new ValidatorException("CourseName cannot be blank/empty");
 		}
-		if (c.getCourseDuration() <= 0 || c.getCourseDuration() > 6 ) {
+		if (c.getCourseDuration() <= 0 || c.getCourseDuration() > 6) {
 			throw new ValidatorException("Invalid Course Duration");
 		}
 		if (c.getCourseFees() <= 0) {
 			throw new ValidatorException("Course Fees cannot be negative/empty");
-		}		
+		}
 		if (c.getCourseImage() == null || "".equals(c.getCourseImage().trim())) {
 			throw new ValidatorException("CourseImage cannot be blank/empty");
 		}
 		if (c.getCoursePdf() == null || "".equals(c.getCoursePdf().trim())) {
 			throw new ValidatorException("CoursePdf cannot be blank/empty");
 		}
-	
+
+	}
+
+	public void validateCategory(QuestionCategory category) throws ValidatorException {
+		if (category.getCategoryName() == null || "".equals(category.getCategoryName().trim())) {
+			throw new ValidatorException("Category Name cannot be blank/empty");
+		}
+	}
+
+	public void validateQuestion(Question question) throws ValidatorException {
+		if (question.getQuestion() == null || "".equals(question.getQuestion().trim())) {
+			throw new ValidatorException("Question cannot be blank/empty");
+		}
+	}
+
+	public void validateAnswer(Answer answer) throws ValidatorException {
+		if (answer.getAnswer() == null || "".equals(answer.getAnswer().trim())) {
+			throw new ValidatorException("Answer cannot be blank/empty");
+		}
 	}
 }

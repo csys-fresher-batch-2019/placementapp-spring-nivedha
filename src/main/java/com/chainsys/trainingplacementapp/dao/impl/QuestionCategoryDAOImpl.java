@@ -41,4 +41,18 @@ public class QuestionCategoryDAOImpl implements QuestionCategoryDAO {
 		return list;
 	}
 
+
+	@Override
+	public void save(QuestionCategory category) throws DbException {
+		String sql = "insert into questioncategory(category_id,category_name)values(category_id_sqn.nextval,?)";
+		logger.info("***Add Category***");
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setString(1,category.getCategoryName());
+			int row = pst.executeUpdate();
+			logger.info("" + row);
+		} catch (SQLException e) {
+			throw new DbException("Unable to Add Categories", e);
+		}	
+	}
+
 }

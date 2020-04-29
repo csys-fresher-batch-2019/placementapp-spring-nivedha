@@ -14,8 +14,8 @@ public class Question {
 	public String getQuestion() {
 		return question;
 	}
-	public void setQuestion(String question) {
-		this.question = question;
+	public String setQuestion(String question) {
+		return this.question = question;
 	}
 	@Override
 	public String toString() {

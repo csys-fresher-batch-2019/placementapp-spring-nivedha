@@ -49,13 +49,7 @@ body {
           
         </ul>
       </li>
-       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">INTERVIEW SCHEDULE <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-           <li><a href="AddInterviewSchedule.jsp">ADD</a></li>
-          
-        </ul>
-      </li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">TRAINER DETAILS <span class="caret"></span></a>
+       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">TRAINER DETAILS <span class="caret"></span></a>
         <ul class="dropdown-menu">
         
            <li><a href="TrainerDetailsServ">VIEW</a></li>
@@ -63,11 +57,14 @@ body {
           
         </ul>
       </li>
-       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">INTERVIEW STATUS <span class="caret"></span></a>
+       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">INTERVIEW DETAILS <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="AllInterviewStatusServ">VIEW STATUS</a></li>
+           <li><a href="AddInterviewSchedule.jsp">ADD SCHEDULE</a></li>
+           <li><a href="DisplayCategoryServ">ADD QUESTIONS</a></li>
+           <li><a href="AllInterviewStatusServ">VIEW STATUS</a></li>
         </ul>
       </li>
+     
        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">GRADE <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="ViewGradeServ">VIEW GRADE</a></li>

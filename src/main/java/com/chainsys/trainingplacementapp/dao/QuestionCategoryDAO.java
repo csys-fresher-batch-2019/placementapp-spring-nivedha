@@ -8,4 +8,7 @@ import com.chainsys.trainingplacementapp.exception.DbException;
 public interface QuestionCategoryDAO {
 
 	List<QuestionCategory> findAll() throws DbException;
+	
+	void save(QuestionCategory category) throws DbException;
+
 }

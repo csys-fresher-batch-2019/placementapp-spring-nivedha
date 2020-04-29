@@ -11,4 +11,6 @@ public interface QuestionDAO {
 	
 	List<Question> findByCategoryId(int categoryId) throws DbException;
 
+	void save(Question question) throws DbException;
+
 }

@@ -29,6 +29,7 @@
   <ul class="list-group list-group-flush">
     <h3 class="card-title"><%=a.getQuestion()%></h3>
      <li class="list-group-item">
+     <p class="card-text"><h4>Answer:</h4></p>
      <p class="card-text"><%=a.getAnswer()%></p>
   </li>
   </ul>

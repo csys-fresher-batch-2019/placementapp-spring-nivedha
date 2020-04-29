@@ -88,4 +88,18 @@ public class AnswerDAOImpl implements AnswerDAO {
 		return list;
 	}
 
+	@Override
+	public void save(Answer answer) throws DbException {
+		String sql = "insert into answer(answer_id,question_id,answer) values(answer_id_sqn.nextval,?,?)";
+		logger.info("***Add Answers***");
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, answer.getQuestionId());
+			pst.setString(2, answer.getAnswer());
+			int row = pst.executeUpdate();
+			logger.info("" + row);
+		} catch (SQLException e) {
+			throw new DbException("Unable to Add Answers", e);
+		}
+	}
+
 }

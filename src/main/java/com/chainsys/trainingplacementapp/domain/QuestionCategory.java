@@ -13,8 +13,8 @@ public class QuestionCategory {
 	public String getCategoryName() {
 		return categoryName;
 	}
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public String setCategoryName(String categoryName) {
+		return this.categoryName = categoryName;
 	}
 	@Override
 	public String toString() {

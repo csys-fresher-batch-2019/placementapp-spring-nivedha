@@ -10,6 +10,8 @@ public interface AnswerDAO {
 	List<Answer> findAll() throws DbException;
 
 	List<Answer> findByQuestionId(int questionId) throws DbException;
-	
+
 	List<Answer> findAnswerByQuestionId(int questionId) throws DbException;
+
+	void save(Answer answer) throws DbException;
 }

@@ -15,6 +15,7 @@ import com.chainsys.trainingplacementapp.dao.QuestionDAO;
 import com.chainsys.trainingplacementapp.domain.Question;
 import com.chainsys.trainingplacementapp.exception.DbException;
 import com.chainsys.trainingplacementapp.util.DbConnection;
+
 @Repository
 public class QuestionDAOImpl implements QuestionDAO {
 	private static final Logger logger = LoggerFactory.getLogger(QuestionDAOImpl.class);
@@ -62,6 +63,21 @@ public class QuestionDAOImpl implements QuestionDAO {
 			throw new DbException("Unable to Find Question", e);
 		}
 		return list;
+	}
+
+	@Override
+	public void save(Question question) throws DbException {
+		String sql = "insert into question(question_id,category_id,question) values(question_id_sqn.nextval,?,?)";
+		logger.info("***Add Question***");
+		try (Connection con = DbConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, question.getCategoryId());
+			pst.setString(2, question.getQuestion());
+			int row = pst.executeUpdate();
+			logger.info("" + row);
+		} catch (SQLException e) {
+			throw new DbException("Unable to Add Questions", e);
+		}
+
 	}
 
 }
